@@ -8,14 +8,18 @@ import (
 
 func TestScanner(t *testing.T) {
 	source := strings.NewReader(`
-	let x = 10;
+	1
+	2
+	3
+	4
+	5
 	`)
 	expectedTokens := []token.Token{
-		token.New(token.LET, "let"),
-		token.New(token.IDENTIFIER, "x"),
-		token.New(token.ASSIGNMENT, "="),
-		token.New(token.INTEGER, "10"),
-		token.New(token.SEMICOLON, ";"),
+		token.New(token.INTEGER, "1"),
+		token.New(token.INTEGER, "2"),
+		token.New(token.INTEGER, "3"),
+		token.New(token.INTEGER, "4"),
+		token.New(token.INTEGER, "5"),
 	}
 	scanner, err := New(source)
 	if err != nil {

@@ -19,9 +19,9 @@ func New(source io.RuneReader) (*Scanner, error) {
 }
 
 func (s *Scanner) NextToken() token.Token {
-	s.nextSpace()
+	s.removeSpace()
 	token := s.nextToken()
-	s.nextSpace()
+	s.removeSpace()
 	return token
 }
 
