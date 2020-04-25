@@ -12,10 +12,10 @@ type Scanner struct {
 	eof    bool
 }
 
-func New(source io.RuneReader) (*Scanner, error) {
+func New(source io.RuneReader) *Scanner {
 	scanner := &Scanner{source: source}
 	scanner.advance()
-	return scanner, nil
+	return scanner
 }
 
 func (s *Scanner) NextToken() token.Token {

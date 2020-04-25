@@ -7,24 +7,11 @@ import (
 )
 
 func TestScanner(t *testing.T) {
-	source := strings.NewReader(`
-	1
-	2
-	3
-	4
-	5
-	`)
+	source := strings.NewReader(`1`)
 	expectedTokens := []token.Token{
 		token.New(token.INTEGER, "1"),
-		token.New(token.INTEGER, "2"),
-		token.New(token.INTEGER, "3"),
-		token.New(token.INTEGER, "4"),
-		token.New(token.INTEGER, "5"),
 	}
-	scanner, err := New(source)
-	if err != nil {
-		t.Fatal(err)
-	}
+	scanner := New(source)
 	for _, expectedToken := range expectedTokens {
 		nextToken := scanner.NextToken()
 		if nextToken.Type != expectedToken.Type {
