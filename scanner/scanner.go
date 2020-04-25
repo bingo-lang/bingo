@@ -2,20 +2,29 @@ package scanner
 
 import (
 	"github.com/bingo-lang/bingo/token"
+	"io"
 )
 
 type Scanner struct {
-	source string
+	source io.RuneReader
+
+	buffer rune
+	eof    bool
 }
 
-func New(source string) (*Scanner, error) {
-	return &Scanner{source}, nil
+func New(source io.RuneReader) (*Scanner, error) {
+	scanner := &Scanner{source: source}
+	scanner.advance()
+	return scanner, nil
 }
 
-func (s *Scanner) Token() token.Token {
-	return token.Token{}
+func (s *Scanner) NextToken() token.Token {
+	s.nextSpace()
+	token := s.nextToken()
+	s.nextSpace()
+	return token
 }
 
-func (s *Scanner) IsDone() bool {
-	return true
+func (s *Scanner) EOF() bool {
+	return s.eof
 }

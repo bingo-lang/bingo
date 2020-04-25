@@ -2,29 +2,35 @@ package scanner
 
 import (
 	"github.com/bingo-lang/bingo/token"
+	"strings"
 	"testing"
 )
 
 func TestScanner(t *testing.T) {
-	source := ""
-	expected := []token.Token{}
+	source := strings.NewReader(`
+	let x = 10;
+	`)
+	expectedTokens := []token.Token{
+		token.New(token.LET, "let"),
+		token.New(token.IDENTIFIER, "x"),
+		token.New(token.ASSIGNMENT, "="),
+		token.New(token.INTEGER, "10"),
+		token.New(token.SEMICOLON, ";"),
+	}
 	scanner, err := New(source)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, token := range expected {
-		if !equal(scanner.Token(), token) {
-			t.Fatal("nooo")
+	for _, expectedToken := range expectedTokens {
+		nextToken := scanner.NextToken()
+		if nextToken.Type != expectedToken.Type {
+			t.Fatalf("Invalid token type. Expecting %q, got %q", expectedToken.Type, nextToken.Type)
+		}
+		if nextToken.Value != expectedToken.Value {
+			t.Fatalf("Invalid token value. Expecting %q, got %q", expectedToken.Value, nextToken.Value)
 		}
 	}
-	if !scanner.IsDone() {
-		t.Fatal("nooo")
+	if !scanner.EOF() {
+		t.Fatalf("Expecting no more tokens but got %q", scanner.NextToken())
 	}
-}
-
-func equal(a, b token.Token) bool {
-	if a.Type != b.Type {
-		return false
-	}
-	return true
 }
