@@ -12,5 +12,6 @@ func (p *Parser) parseStatement() ast.Statement {
 }
 
 func (p *Parser) parseStatementExpression() *ast.StatementExpression {
-	return &ast.StatementExpression{}
+	expression := p.parseExpression(LOWEST)
+	return &ast.StatementExpression{expression}
 }
