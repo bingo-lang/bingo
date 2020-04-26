@@ -17,5 +17,10 @@ func New(source io.RuneReader) *Parser {
 }
 
 func (p *Parser) Parse() *ast.Program {
-	return &ast.Program{}
+	program := ast.New()
+	for !p.source.EOF() {
+		statement := p.parseStatement()
+		program.Statements = append(program.Statements, statement)
+	}
+	return program
 }

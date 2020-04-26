@@ -1,4 +1,4 @@
 package ast
 
-type Program struct {
+type Node interface {
 }
