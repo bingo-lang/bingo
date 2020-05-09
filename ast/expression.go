@@ -4,5 +4,9 @@ type Expression interface {
 	Node
 }
 
-type ExpressionInfix struct {
+type ExpressionInfix interface {
+}
+
+type ExpressionInfixInteger struct {
+	Value string
 }

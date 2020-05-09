@@ -9,10 +9,21 @@ import (
 func TestExpressionStatement(t *testing.T) {
 	source := strings.NewReader(`1`)
 	parser := New(source)
-	expectedAst := &ast.Program{}
-	program := parser.Parse()
+	expected := &ast.Program{
+		Statements: []ast.Statement{
+			&ast.StatementExpression{
+				Expression: &ast.ExpressionInfixInteger{
+					Value: "1",
+				},
+			},
+		},
+	}
+	gotten := parser.Parse()
+	comparePrograms(t, expected, gotten)
+}
 
-	if program != expectedAst {
-		t.Fatal("Different")
+func comparePrograms(t *testing.T, expected, gotten *ast.Program) {
+	if len(gotten.Statements) != len(expected.Statements) {
+		t.Fatalf("Expecting %d statements got %d", len(expected.Statements), len(gotten.Statements))
 	}
 }
