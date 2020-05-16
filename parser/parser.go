@@ -20,7 +20,8 @@ func New(source io.RuneReader) *Parser {
 
 func (p *Parser) Parse() *ast.Program {
 	program := ast.New()
-	for ; !p.source.EOF(); p.advance() {
+	for !p.source.EOF() {
+		p.advance()
 		statement := p.parseStatement()
 		program.Statements = append(program.Statements, statement)
 	}
