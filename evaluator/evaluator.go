@@ -7,8 +7,8 @@ import (
 
 func Eval(node ast.Node) object.Object {
 	switch node := node.(type) {
-	case ast.ExpressionInfixInteger:
-		return evalExpressionInfixInteger(node)
+	case ast.ExpressionPrefixInteger:
+		return evalExpressionPrefixInteger(node)
 	default:
 		return nil
 	}

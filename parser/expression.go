@@ -5,12 +5,12 @@ import (
 )
 
 func (p *Parser) parseExpression(precedence Precedence) ast.Expression {
-	return p.parseExpressionInfix()
+	return p.parseExpressionPrefix()
 }
 
-func (p *Parser) parseExpressionInfix() ast.ExpressionInfix {
+func (p *Parser) parseExpressionPrefix() ast.ExpressionPrefix {
 	switch p.buffer.Type {
 	default:
-		return &ast.ExpressionInfixInteger{p.buffer.Value}
+		return &ast.ExpressionPrefixInteger{p.buffer.Value}
 	}
 }

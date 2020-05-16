@@ -12,7 +12,7 @@ func TestExpressionStatement(t *testing.T) {
 	expected := &ast.Program{
 		Statements: []ast.Statement{
 			&ast.StatementExpression{
-				Expression: &ast.ExpressionInfixInteger{
+				Expression: &ast.ExpressionPrefixInteger{
 					Value: "1",
 				},
 			},

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func EvalExpressionInfixInteger(t *testing.T) {
+func EvalExpressionPrefixInteger(t *testing.T) {
 	source := strings.NewReader(`1`)
 	expected := object.Integer{Value: 1}
 	parser := parser.New(source)
