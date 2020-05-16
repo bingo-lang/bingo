@@ -7,7 +7,24 @@ import (
 	"testing"
 )
 
-func EvalExpressionPrefixInteger(t *testing.T) {
+/*
+func TestEvalExpressionPrefixMinus(t *testing.T) {
+	source := strings.NewReader(`-1`)
+	expected := object.Integer{Value: -1}
+	parser := parser.New(source)
+	program := parser.Parse()
+	gotten, ok := Eval(program.Statements[0]).(*object.Integer)
+	fmt.Println(gotten)
+	if !ok {
+		t.Fatalf("Expect an integer, got %q", gotten)
+	}
+	if gotten.Value != expected.Value {
+		t.Fatalf("Expect value to be %q, got %q", expected, gotten)
+	}
+}
+*/
+
+func TestEvalExpressionPrefixInteger(t *testing.T) {
 	source := strings.NewReader(`1`)
 	expected := object.Integer{Value: 1}
 	parser := parser.New(source)
@@ -17,6 +34,6 @@ func EvalExpressionPrefixInteger(t *testing.T) {
 		t.Fatalf("Expect an integer, got %q", gotten)
 	}
 	if gotten.Value != expected.Value {
-		t.Fatalf("Expect value to be %q, got %q", expected, gotten)
+		t.Fatalf("Expect value to be %d, got %d", expected.Value, gotten.Value)
 	}
 }
