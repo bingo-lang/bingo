@@ -6,10 +6,12 @@ import (
 
 func (s *Scanner) nextToken() token.Token {
 	switch {
+	case s.eof:
+		return s.nextEof()
 	case isDigit(s.buffer):
 		return s.nextNumber()
 	default:
-		return token.New(token.UNDEFINED, "")
+		return s.nextUndefined()
 	}
 }
 
@@ -19,4 +21,14 @@ func (s *Scanner) nextNumber() token.Token {
 		number += string(s.buffer)
 	}
 	return token.New(token.INTEGER, number)
+}
+
+func (s *Scanner) nextEof() token.Token {
+	return token.New(token.EOF, "")
+}
+
+func (s *Scanner) nextUndefined() token.Token {
+	undefined := string(s.buffer)
+	s.advance()
+	return token.New(token.UNDEFINED, undefined)
 }

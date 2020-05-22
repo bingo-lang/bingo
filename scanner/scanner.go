@@ -24,7 +24,3 @@ func (s *Scanner) NextToken() token.Token {
 	s.removeSpace()
 	return token
 }
-
-func (s *Scanner) EOF() bool {
-	return s.eof
-}

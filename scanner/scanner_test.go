@@ -7,9 +7,11 @@ import (
 )
 
 func TestScanner(t *testing.T) {
-	source := strings.NewReader(`1`)
+	source := strings.NewReader(`1;`)
 	expectedTokens := []token.Token{
 		token.New(token.INTEGER, "1"),
+		token.New(token.UNDEFINED, ";"),
+		token.New(token.EOF, ""),
 	}
 	scanner := New(source)
 	for _, expectedToken := range expectedTokens {
@@ -20,8 +22,5 @@ func TestScanner(t *testing.T) {
 		if nextToken.Value != expectedToken.Value {
 			t.Fatalf("Invalid token value. Expecting %q, got %q", expectedToken.Value, nextToken.Value)
 		}
-	}
-	if !scanner.EOF() {
-		t.Fatalf("Expecting no more tokens but got %q", scanner.NextToken())
 	}
 }
