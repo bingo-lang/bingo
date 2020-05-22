@@ -7,8 +7,9 @@ import (
 )
 
 func TestScanner(t *testing.T) {
-	source := strings.NewReader(`1;`)
+	source := strings.NewReader(`-1;`)
 	expectedTokens := []token.Token{
+		token.New(token.MINUS, "-"),
 		token.New(token.INTEGER, "1"),
 		token.New(token.UNDEFINED, ";"),
 		token.New(token.EOF, ""),

@@ -10,6 +10,8 @@ func (s *Scanner) nextToken() token.Token {
 		return s.nextEof()
 	case isDigit(s.buffer):
 		return s.nextNumber()
+	case isSymbol(s.buffer):
+		return s.nextSymbol()
 	default:
 		return s.nextUndefined()
 	}
@@ -21,6 +23,17 @@ func (s *Scanner) nextNumber() token.Token {
 		number += string(s.buffer)
 	}
 	return token.New(token.INTEGER, number)
+}
+
+func (s *Scanner) nextSymbol() token.Token {
+	switch s.buffer {
+	case '-':
+		symbol := string(s.buffer)
+		s.advance()
+		return token.New(token.MINUS, symbol)
+	default:
+		return s.nextUndefined()
+	}
 }
 
 func (s *Scanner) nextEof() token.Token {

@@ -2,12 +2,41 @@ package parser
 
 import (
 	"github.com/bingo-lang/bingo/ast"
+	"github.com/bingo-lang/bingo/token"
 	"reflect"
 	"strings"
 	"testing"
 )
 
-func TestExpressionStatement(t *testing.T) {
+func TestExpressionPrefixMinus(t *testing.T) {
+	source := strings.NewReader(`-237`)
+	parser := New(source)
+	gotten := parser.Parse()
+	if len(gotten.Statements) != 1 {
+		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
+	}
+	statement, ok := (gotten.Statements[0]).(*ast.StatementExpression)
+	if !ok {
+		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
+	}
+	expressionPrefix, ok := statement.Expression.(*ast.ExpressionPrefix)
+	if !ok {
+		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionPrefix", reflect.TypeOf(expressionPrefix))
+	}
+	if expressionPrefix.Operator.Type != token.MINUS {
+		t.Fatalf("Expecting operator to be of type %q, got %q", token.MINUS, expressionPrefix.Operator.Type)
+	}
+	expressionInteger, ok := expressionPrefix.Expression.(*ast.ExpressionInteger)
+	if !ok {
+		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionInteger))
+	}
+	if expressionInteger.Value != "237" {
+		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "237", "237")
+	}
+
+}
+
+func TestExpressionInteger(t *testing.T) {
 	source := strings.NewReader(`237`)
 	parser := New(source)
 	gotten := parser.Parse()
@@ -18,11 +47,11 @@ func TestExpressionStatement(t *testing.T) {
 	if !ok {
 		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
 	}
-	expression, ok := statement.Expression.(*ast.ExpressionPrefixInteger)
+	expressionInteger, ok := statement.Expression.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionPrefixInteger", reflect.TypeOf(expression))
+		t.Fatalf("Expecting expressionInteger to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionInteger))
 	}
-	if expression.Value != "237" {
-		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "237", "237")
+	if expressionInteger.Value != "237" {
+		t.Fatalf("Expecting expressionInteger prefix integer value to be %q, got %q", "237", "237")
 	}
 }

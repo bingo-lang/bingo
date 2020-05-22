@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func evalExpressionPrefixInteger(node *ast.ExpressionPrefixInteger) *object.Integer {
+func evalExpressionInteger(node *ast.ExpressionInteger) *object.Integer {
 	value, _ := strconv.Atoi(node.Value)
 	return &object.Integer{Value: value}
 }

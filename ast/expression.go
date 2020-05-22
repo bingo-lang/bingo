@@ -1,12 +1,17 @@
 package ast
 
+import (
+	"github.com/bingo-lang/bingo/token"
+)
+
 type Expression interface {
-	Node
 }
 
-type ExpressionPrefix interface {
+type ExpressionPrefix struct {
+	Operator   token.Token
+	Expression Expression
 }
 
-type ExpressionPrefixInteger struct {
+type ExpressionInteger struct {
 	Value string
 }

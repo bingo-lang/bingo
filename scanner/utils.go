@@ -13,7 +13,7 @@ func isLetter(buffer rune) bool {
 }
 
 func isSymbol(buffer rune) bool {
-	return buffer == ';' || unicode.IsSymbol(buffer)
+	return buffer == '-'
 }
 
 func isDigit(buffer rune) bool {
