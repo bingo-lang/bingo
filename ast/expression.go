@@ -7,6 +7,12 @@ import (
 type Expression interface {
 }
 
+type ExpressionInfix struct {
+	Operator        token.Token
+	ExpressionLeft  Expression
+	ExpressionRight Expression
+}
+
 type ExpressionPrefix struct {
 	Operator   token.Token
 	Expression Expression

@@ -7,9 +7,23 @@ import (
 	"testing"
 )
 
+func TestEvalExpressionInfixMinus(t *testing.T) {
+	source := strings.NewReader(`11 - 1`)
+	expected := object.Integer{Value: -10}
+	parser := parser.New(source)
+	program := parser.Parse()
+	gotten, ok := Eval(program.Statements[0]).(*object.Integer)
+	if !ok {
+		t.Fatalf("Expect an integer, got %q", gotten)
+	}
+	if gotten.Value != expected.Value {
+		t.Fatalf("Expect value to be %d, got %d", expected.Value, gotten.Value)
+	}
+}
+
 func TestEvalExpressionPrefixMinus(t *testing.T) {
-	source := strings.NewReader(`-1`)
-	expected := object.Integer{Value: -1}
+	source := strings.NewReader(`-11`)
+	expected := object.Integer{Value: -11}
 	parser := parser.New(source)
 	program := parser.Parse()
 	gotten, ok := Eval(program.Statements[0]).(*object.Integer)

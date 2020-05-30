@@ -6,6 +6,7 @@ const (
 	UNDEFINED Type = iota
 	EOF
 	// Symbols.
+	SEMICOLON
 	MINUS
 	// Numbers.
 	INTEGER
@@ -15,7 +16,9 @@ func (t Type) String() string {
 	switch t {
 	case EOF:
 		return "EOF"
-	//Symbols.
+		//Symbols.
+	case SEMICOLON:
+		return "SEMICOLON"
 	case MINUS:
 		return "MINUS"
 	//Numbers.
