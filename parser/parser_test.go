@@ -9,7 +9,7 @@ import (
 )
 
 func TestExpressionInfixMinus(t *testing.T) {
-	source := strings.NewReader(`11 - 1`)
+	source := strings.NewReader(`11 - 10`)
 	parser := New(source)
 	gotten := parser.Parse()
 	if len(gotten.Statements) != 1 {
@@ -30,15 +30,15 @@ func TestExpressionInfixMinus(t *testing.T) {
 	if !ok {
 		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionLeft))
 	}
-	if expressionLeft.Value != "237" {
-		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "237", "237")
+	if expressionLeft.Value != "11" {
+		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "11", expressionLeft.Value)
 	}
 	expressionRight, ok := expressionInfix.ExpressionRight.(*ast.ExpressionInteger)
 	if !ok {
 		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionRight))
 	}
-	if expressionRight.Value != "237" {
-		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "237", "237")
+	if expressionRight.Value != "10" {
+		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "10", expressionRight.Value)
 	}
 
 }
