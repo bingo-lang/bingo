@@ -8,8 +8,8 @@ import (
 type Scanner struct {
 	source io.RuneReader
 
-	buffer rune
-	eof    bool
+	char rune
+	eof  bool
 }
 
 func New(source io.RuneReader) *Scanner {

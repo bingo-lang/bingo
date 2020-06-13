@@ -4,18 +4,23 @@ import (
 	"unicode"
 )
 
-func isSpace(buffer rune) bool {
-	return unicode.IsSpace(buffer)
+func isSpace(token rune) bool {
+	return unicode.IsSpace(token)
 }
 
-func isLetter(buffer rune) bool {
-	return unicode.IsLetter(buffer)
+func isLetter(token rune) bool {
+	return unicode.IsLetter(token)
 }
 
-func isSymbol(buffer rune) bool {
-	return buffer == '-'
+func isSymbol(token rune) bool {
+	switch token {
+	case '+', '-', '*', '/':
+		return true
+	default:
+		return false
+	}
 }
 
-func isDigit(buffer rune) bool {
-	return unicode.IsDigit(buffer)
+func isDigit(token rune) bool {
+	return unicode.IsDigit(token)
 }

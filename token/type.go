@@ -5,9 +5,13 @@ type Type uint
 const (
 	UNDEFINED Type = iota
 	EOF
+
 	// Symbols.
-	SEMICOLON
+	PLUS
 	MINUS
+	ASTERISK
+	SLASH
+
 	// Numbers.
 	INTEGER
 )
@@ -16,14 +20,21 @@ func (t Type) String() string {
 	switch t {
 	case EOF:
 		return "EOF"
-		//Symbols.
-	case SEMICOLON:
-		return "SEMICOLON"
+
+		// Symbols.
+	case PLUS:
+		return "PLUS"
 	case MINUS:
 		return "MINUS"
-	//Numbers.
+	case ASTERISK:
+		return "ASTERISK"
+	case SLASH:
+		return "SLASH"
+
+	// Numbers.
 	case INTEGER:
 		return "INTEGER"
+
 	default:
 		return "UNDEFINED"
 	}
