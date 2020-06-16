@@ -9,7 +9,7 @@ func (p *Parser) parseExpressionUnary() ast.Expression {
 	switch p.buffer.Type {
 	case token.INTEGER:
 		return p.parseExpressionInteger()
-	case token.MINUS:
+	case token.PLUS, token.MINUS:
 		return p.parseExpressionPrefix()
 	default:
 		return nil
