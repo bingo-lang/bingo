@@ -5,16 +5,9 @@ import (
 )
 
 func (p *Parser) parseExpression(precedence Precedence) ast.Expression {
-	var expression ast.Expression
-	expression = p.parseExpressionUnary()
+	expression := p.parseExpressionUnary()
 	for pr := p.precedence(); precedence < pr; pr = p.precedence() {
-		infix := &ast.ExpressionBinary{
-			ExpressionLeft: expression,
-			Operator:       p.buffer,
-		}
-		p.advance()
-		infix.ExpressionRight = p.parseExpression(pr)
-		expression = infix
+		expression = p.parseExpressionBinary(expression, pr)
 	}
 	return expression
 }
