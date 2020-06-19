@@ -8,6 +8,38 @@ import (
 	"testing"
 )
 
+func TestOperatorPrecedence(t *testing.T) {
+	testCases := []struct{ source, expected string }{
+		{"1", "1"},
+		{"+2", "+2"},
+		{"-3", "-3"},
+		{"1 + 2", "(1 + 2)"},
+		{"1 + 2 * 3", "(1 + (2 * 3))"},
+		{"1 / 2 * 3", "((1 / 2) * 3)"},
+		{"1 / 2 * 3 + 5", "(((1 / 2) * 3) + 5)"},
+	}
+	for _, testCase := range testCases {
+		testOperatorPrecedence(t, testCase.source, testCase.expected)
+	}
+}
+
+func testOperatorPrecedence(t *testing.T, source string, expected string) {
+	reader := strings.NewReader(source)
+	parser := New(reader)
+	gotten := parser.Parse()
+	if len(gotten.Statements) != 1 {
+		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
+	}
+	statement, ok := (gotten.Statements[0]).(*ast.StatementExpression)
+	if !ok {
+		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
+	}
+	expressionStr := statement.Expression.String()
+	if expressionStr != expected {
+		t.Fatalf("Expecting expression to be %q, got %q", expected, expressionStr)
+	}
+}
+
 func TestExpressionBinary(t *testing.T) {
 	testCases := []struct {
 		source                string

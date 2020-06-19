@@ -21,15 +21,15 @@ func (t Type) String() string {
 	case EOF:
 		return "EOF"
 
-		// Symbols.
+	// Symbols.
 	case PLUS:
-		return "PLUS"
+		return "+"
 	case MINUS:
-		return "MINUS"
+		return "-"
 	case ASTERISK:
-		return "ASTERISK"
+		return "*"
 	case SLASH:
-		return "SLASH"
+		return "/"
 
 	// Numbers.
 	case INTEGER:
