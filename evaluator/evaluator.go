@@ -19,14 +19,14 @@ func evalExpression(node ast.Expression) object.Object {
 	switch node := node.(type) {
 	case *ast.ExpressionInteger:
 		return evalExpressionInteger(node)
-	case *ast.ExpressionPrefix:
-		return evalExpressionPrefix(node)
+	case *ast.ExpressionUnary:
+		return evalExpressionUnary(node)
 	default:
 		return nil
 	}
 }
 
-func evalExpressionPrefix(node *ast.ExpressionPrefix) object.Object {
+func evalExpressionUnary(node *ast.ExpressionUnary) object.Object {
 	switch node.Operator.Type {
 	case token.MINUS:
 		return evalMinus(node.Expression)

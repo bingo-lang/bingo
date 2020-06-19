@@ -22,8 +22,8 @@ func (p *Parser) parseExpressionInteger() *ast.ExpressionInteger {
 	return &ast.ExpressionInteger{Value: value}
 }
 
-func (p *Parser) parseExpressionPrefix() *ast.ExpressionPrefix {
-	expressionPrefix := &ast.ExpressionPrefix{Operator: p.buffer}
+func (p *Parser) parseExpressionPrefix() *ast.ExpressionUnary {
+	expressionPrefix := &ast.ExpressionUnary{Operator: p.buffer}
 	p.advance()
 	expressionPrefix.Expression = p.parseExpression(LOWEST)
 	return expressionPrefix

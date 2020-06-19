@@ -7,13 +7,13 @@ import (
 type Expression interface {
 }
 
-type ExpressionInfix struct {
+type ExpressionBinary struct {
 	Operator        token.Token
 	ExpressionLeft  Expression
 	ExpressionRight Expression
 }
 
-type ExpressionPrefix struct {
+type ExpressionUnary struct {
 	Operator   token.Token
 	Expression Expression
 }

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestEvalExpressionPrefixMinus(t *testing.T) {
+func TestEvalExpressionUnaryMinus(t *testing.T) {
 	source := strings.NewReader(`-11`)
 	expected := object.Integer{Value: -11}
 	parser := parser.New(source)

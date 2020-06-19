@@ -8,9 +8,24 @@ import (
 	"testing"
 )
 
-func TestExpressionInfixMinus(t *testing.T) {
-	source := strings.NewReader(`11 - 10`)
-	parser := New(source)
+func TestExpressionBinary(t *testing.T) {
+	testCases := []struct {
+		source                string
+		operator              token.Type
+		leftValue, rightValue string
+	}{
+		{"143 - 1", token.MINUS, "143", "1"},
+		{"120 + 3", token.PLUS, "120", "2"},
+		{"1 - 0", token.MINUS, "1", "0"},
+	}
+	for _, testCase := range testCases {
+		testExpressionBinary(t, testCase.source, testCase.operator, testCase.leftValue, testCase.rightValue)
+	}
+}
+
+func testExpressionBinary(t *testing.T, source string, operator token.Type, valueLeft, valueRight string) {
+	reader := strings.NewReader(source)
+	parser := New(reader)
 	gotten := parser.Parse()
 	if len(gotten.Statements) != 1 {
 		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
@@ -19,26 +34,27 @@ func TestExpressionInfixMinus(t *testing.T) {
 	if !ok {
 		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
 	}
-	expressionInfix, ok := statement.Expression.(*ast.ExpressionInfix)
+	expressionPrefix, ok := statement.Expression.(*ast.ExpressionBinary)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionPrefix", reflect.TypeOf(expressionInfix))
+		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionBinary", reflect.TypeOf(expressionPrefix))
 	}
-	if expressionInfix.Operator.Type != token.MINUS {
-		t.Fatalf("Expecting operator to be of type %q, got %q", token.MINUS, expressionInfix.Operator.Type)
+	if expressionPrefix.Operator.Type != operator {
+		t.Fatalf("Expecting operator to be of type %q, got %q", operator, expressionPrefix.Operator.Type)
 	}
-	expressionLeft, ok := expressionInfix.ExpressionLeft.(*ast.ExpressionInteger)
+	// Left expression.
+	expressionIntegerLeft, ok := expressionPrefix.ExpressionLeft.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionLeft))
+		t.Fatalf("Expecting expression left to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionIntegerLeft))
 	}
-	if expressionLeft.Value != "11" {
-		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "11", expressionLeft.Value)
+	if expressionIntegerLeft.Value != valueLeft {
+		t.Fatalf("Expecting expression left integer value to be %q, got %q", valueLeft, expressionIntegerLeft.Value)
 	}
-	expressionRight, ok := expressionInfix.ExpressionRight.(*ast.ExpressionInteger)
+	// Right expression.
+	expressionIntegerRight, ok := expressionPrefix.ExpressionLeft.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionRight))
+		t.Fatalf("Expecting expression right to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionIntegerRight))
 	}
-	if expressionRight.Value != "10" {
-		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", "10", expressionRight.Value)
+	if expressionIntegerRight.Value != valueLeft {
+		t.Fatalf("Expecting expression right integer value to be %q, got %q", valueRight, expressionIntegerLeft.Value)
 	}
-
 }

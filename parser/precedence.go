@@ -13,7 +13,7 @@ const (
 
 func (p *Parser) precedence() Precedence {
 	switch p.buffer.Type {
-	case token.MINUS:
+	case token.PLUS, token.MINUS:
 		return ADDITION
 	default:
 		return LOWEST

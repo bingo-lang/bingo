@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestExpressionPrefix(t *testing.T) {
+func TestExpressionUnary(t *testing.T) {
 	testCases := []struct {
 		source   string
 		operator token.Type
@@ -19,7 +19,7 @@ func TestExpressionPrefix(t *testing.T) {
 		{"-10", token.MINUS, "10"},
 	}
 	for _, testCase := range testCases {
-		testExpressionPrefix(t, testCase.source, testCase.operator, testCase.value)
+		testExpressionUnary(t, testCase.source, testCase.operator, testCase.value)
 	}
 }
 
@@ -43,7 +43,7 @@ func TestExpressionInteger(t *testing.T) {
 	}
 }
 
-func testExpressionPrefix(t *testing.T, source string, operator token.Type, value string) {
+func testExpressionUnary(t *testing.T, source string, operator token.Type, value string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
 	gotten := parser.Parse()
@@ -54,9 +54,9 @@ func testExpressionPrefix(t *testing.T, source string, operator token.Type, valu
 	if !ok {
 		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
 	}
-	expressionPrefix, ok := statement.Expression.(*ast.ExpressionPrefix)
+	expressionPrefix, ok := statement.Expression.(*ast.ExpressionUnary)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionPrefix", reflect.TypeOf(expressionPrefix))
+		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionUnary", reflect.TypeOf(expressionPrefix))
 	}
 	if expressionPrefix.Operator.Type != operator {
 		t.Fatalf("Expecting operator to be of type %q, got %q", operator, expressionPrefix.Operator.Type)
