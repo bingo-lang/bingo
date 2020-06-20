@@ -12,6 +12,7 @@ func (p *Parser) parseExpressionUnary() ast.Expression {
 	case token.PLUS, token.MINUS:
 		return p.parseExpressionPrefix()
 	default:
+		// TODO(tugorez): Handle possible errors.
 		return nil
 	}
 }

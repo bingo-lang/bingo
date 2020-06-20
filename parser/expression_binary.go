@@ -11,5 +11,6 @@ func (p *Parser) parseExpressionBinary(expLeft ast.Expression, pr Precedence) as
 	}
 	p.advance()
 	expression.ExpressionRight = p.parseExpression(pr)
+	// TODO(tugorez): Handle possible errors.
 	return expression
 }
