@@ -5,5 +5,5 @@ func (s *Scanner) advance() {
 	if err != nil {
 		s.eof = true
 	}
-	s.buffer = r
+	s.char = r
 }

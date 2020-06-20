@@ -19,15 +19,36 @@ func evalExpression(node ast.Expression) object.Object {
 	switch node := node.(type) {
 	case *ast.ExpressionInteger:
 		return evalExpressionInteger(node)
-	case *ast.ExpressionPrefix:
-		return evalExpressionPrefix(node)
+	case *ast.ExpressionUnary:
+		return evalExpressionUnary(node)
+	case *ast.ExpressionBinary:
+		return evalExpressionBinary(node)
 	default:
 		return nil
 	}
 }
 
-func evalExpressionPrefix(node *ast.ExpressionPrefix) object.Object {
+func evalExpressionBinary(node *ast.ExpressionBinary) object.Object {
+	left, _ := evalExpression(node.ExpressionLeft).(*object.Integer)
+	right, _ := evalExpression(node.ExpressionRight).(*object.Integer)
 	switch node.Operator.Type {
+	case token.PLUS:
+		return &object.Integer{Value: left.Value + right.Value}
+	case token.MINUS:
+		return &object.Integer{Value: left.Value - right.Value}
+	case token.ASTERISK:
+		return &object.Integer{Value: left.Value * right.Value}
+	case token.SLASH:
+		return &object.Integer{Value: left.Value / right.Value}
+	default:
+		return nil
+	}
+}
+
+func evalExpressionUnary(node *ast.ExpressionUnary) object.Object {
+	switch node.Operator.Type {
+	case token.PLUS:
+		return evalExpression(node.Expression)
 	case token.MINUS:
 		return evalMinus(node.Expression)
 	default:

@@ -7,11 +7,17 @@ import (
 )
 
 func TestScanner(t *testing.T) {
-	source := strings.NewReader(`-1;`)
+	source := strings.NewReader(`10 + 1 - 1 * 1 / 1`)
 	expectedTokens := []token.Token{
+		token.New(token.INTEGER, "10"),
+		token.New(token.PLUS, "+"),
+		token.New(token.INTEGER, "1"),
 		token.New(token.MINUS, "-"),
 		token.New(token.INTEGER, "1"),
-		token.New(token.UNDEFINED, ";"),
+		token.New(token.ASTERISK, "*"),
+		token.New(token.INTEGER, "1"),
+		token.New(token.SLASH, "/"),
+		token.New(token.INTEGER, "1"),
 		token.New(token.EOF, ""),
 	}
 	scanner := New(source)
