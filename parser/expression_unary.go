@@ -6,7 +6,7 @@ import (
 )
 
 func (p *Parser) parseExpressionUnary() ast.Expression {
-	switch p.buffer.Type {
+	switch p.token.Type {
 	case token.INTEGER:
 		return p.parseExpressionInteger()
 	case token.PLUS, token.MINUS:
@@ -18,13 +18,13 @@ func (p *Parser) parseExpressionUnary() ast.Expression {
 }
 
 func (p *Parser) parseExpressionInteger() *ast.ExpressionInteger {
-	value := p.buffer.Value
+	value := p.token.Value
 	p.advance()
 	return &ast.ExpressionInteger{Value: value}
 }
 
 func (p *Parser) parseExpressionPrefix() *ast.ExpressionUnary {
-	expressionPrefix := &ast.ExpressionUnary{Operator: p.buffer}
+	expressionPrefix := &ast.ExpressionUnary{Operator: p.token}
 	p.advance()
 	expressionPrefix.Expression = p.parseExpression(LOWEST)
 	return expressionPrefix

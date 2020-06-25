@@ -13,7 +13,7 @@ const (
 )
 
 func (p *Parser) precedence() Precedence {
-	switch p.buffer.Type {
+	switch p.token.Type {
 	case token.PLUS, token.MINUS:
 		return ADDITION
 	case token.ASTERISK, token.SLASH:

@@ -9,7 +9,7 @@ import (
 
 type Parser struct {
 	source *scanner.Scanner
-	buffer token.Token
+	token token.Token
 }
 
 func New(source io.RuneReader) *Parser {
@@ -20,7 +20,7 @@ func New(source io.RuneReader) *Parser {
 
 func (p *Parser) Parse() *ast.Program {
 	program := ast.New()
-	for p.advance(); p.buffer.Type != token.EOF; p.advance() {
+	for p.advance(); p.token.Type != token.EOF; p.advance() {
 		statement := p.parseStatement()
 		program.Statements = append(program.Statements, statement)
 	}

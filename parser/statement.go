@@ -13,5 +13,9 @@ func (p *Parser) parseStatement() ast.Statement {
 
 func (p *Parser) parseStatementExpression() *ast.StatementExpression {
 	expression := p.parseExpression(LOWEST)
-	return &ast.StatementExpression{expression}
+	if expression == nil {
+		// consume until eol
+		return nil
+	}
+	return &ast.StatementExpression{Expression: expression}
 }

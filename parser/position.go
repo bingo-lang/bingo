@@ -1,5 +1,5 @@
 package parser
 
 func (p *Parser) advance() {
-	p.buffer = p.source.NextToken()
+	p.token = p.source.NextToken()
 }

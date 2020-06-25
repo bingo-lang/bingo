@@ -7,7 +7,7 @@ import (
 func (p *Parser) parseExpressionBinary(expLeft ast.Expression, pr Precedence) ast.Expression {
 	expression := &ast.ExpressionBinary{
 		ExpressionLeft: expLeft,
-		Operator:       p.buffer,
+		Operator:       p.token,
 	}
 	p.advance()
 	expression.ExpressionRight = p.parseExpression(pr)
