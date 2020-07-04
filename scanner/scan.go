@@ -4,24 +4,24 @@ import (
 	"github.com/bingo-lang/bingo/token"
 )
 
-func (s *Scanner) nextToken() token.Token {
+func (s *Scanner) scanToken() token.Token {
 	switch {
 	case s.eof:
-		return s.nextEof()
+		return s.scanEof()
 	case isDigit(s.char):
-		return s.nextNumber()
+		return s.scanNumber()
 	case isSymbol(s.char):
-		return s.nextSymbol()
+		return s.scanSymbol()
 	default:
-		return s.nextUndefined()
+		return s.scanUndefined()
 	}
 }
 
-func (s *Scanner) nextEof() token.Token {
+func (s *Scanner) scanEof() token.Token {
 	return token.New(token.EOF, "")
 }
 
-func (s *Scanner) nextNumber() token.Token {
+func (s *Scanner) scanNumber() token.Token {
 	number := ""
 	for ; isDigit(s.char); s.advance() {
 		number += string(s.char)
@@ -29,7 +29,7 @@ func (s *Scanner) nextNumber() token.Token {
 	return token.New(token.INTEGER, number)
 }
 
-func (s *Scanner) nextSymbol() token.Token {
+func (s *Scanner) scanSymbol() token.Token {
 	switch s.char {
 	case '+':
 		symbol := string(s.char)
@@ -47,12 +47,16 @@ func (s *Scanner) nextSymbol() token.Token {
 		symbol := string(s.char)
 		s.advance()
 		return token.New(token.SLASH, symbol)
+	case ';':
+		symbol := string(s.char)
+		s.advance()
+		return token.New(token.SEMICOLON, symbol)
 	default:
-		return s.nextUndefined()
+		return s.scanUndefined()
 	}
 }
 
-func (s *Scanner) nextUndefined() token.Token {
+func (s *Scanner) scanUndefined() token.Token {
 	undefined := string(s.char)
 	s.advance()
 	return token.New(token.UNDEFINED, undefined)

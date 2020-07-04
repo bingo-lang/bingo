@@ -4,13 +4,15 @@ import (
 	"github.com/bingo-lang/bingo/ast"
 )
 
-func (p *Parser) parseExpressionBinary(expLeft ast.Expression, pr Precedence) ast.Expression {
+func (p *Parser) parseExpressionBinary(expLeft ast.Expression, pr Precedence) *ast.ExpressionBinary {
 	expression := &ast.ExpressionBinary{
 		ExpressionLeft: expLeft,
 		Operator:       p.token,
 	}
 	p.advance()
-	expression.ExpressionRight = p.parseExpression(pr)
-	// TODO(tugorez): Handle possible errors.
-	return expression
+	if expressionRight := p.parseExpression(pr); !isNil(expressionRight) {
+		expression.ExpressionRight = expressionRight
+		return expression
+	}
+	return nil
 }

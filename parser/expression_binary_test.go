@@ -3,7 +3,6 @@ package parser
 import (
 	"github.com/bingo-lang/bingo/ast"
 	"github.com/bingo-lang/bingo/token"
-	"reflect"
 	"strings"
 	"testing"
 )
@@ -26,15 +25,12 @@ func TestOperatorPrecedence(t *testing.T) {
 func testOperatorPrecedence(t *testing.T, source string, expected string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
-	gotten := parser.Parse()
-	if len(gotten.Statements) != 1 {
-		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
-	}
-	statement, ok := (gotten.Statements[0]).(*ast.StatementExpression)
+	statement := parser.parseStatement()
+	statementExpression, ok := (statement).(*ast.StatementExpression)
 	if !ok {
-		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
+		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
 	}
-	expressionStr := statement.Expression.String()
+	expressionStr := statementExpression.Expression.String()
 	if expressionStr != expected {
 		t.Fatalf("Expecting expression to be %q, got %q", expected, expressionStr)
 	}
@@ -60,17 +56,14 @@ func TestExpressionBinary(t *testing.T) {
 func testExpressionBinary(t *testing.T, source string, operator token.Type, valueLeft, valueRight string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
-	gotten := parser.Parse()
-	if len(gotten.Statements) != 1 {
-		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
-	}
-	statement, ok := (gotten.Statements[0]).(*ast.StatementExpression)
+	statement := parser.parseStatement()
+	statementExpression, ok := (statement).(*ast.StatementExpression)
 	if !ok {
-		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
+		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
 	}
-	expressionPrefix, ok := statement.Expression.(*ast.ExpressionBinary)
+	expressionPrefix, ok := statementExpression.Expression.(*ast.ExpressionBinary)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionBinary", reflect.TypeOf(expressionPrefix))
+		t.Fatalf("Expecting expression to be %s, got %T", "ExpressionBinary", expressionPrefix)
 	}
 	if expressionPrefix.Operator.Type != operator {
 		t.Fatalf("Expecting operator to be of type %q, got %q", operator, expressionPrefix.Operator.Type)
@@ -78,7 +71,7 @@ func testExpressionBinary(t *testing.T, source string, operator token.Type, valu
 	// Left expression.
 	expressionIntegerLeft, ok := expressionPrefix.ExpressionLeft.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expression left to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionIntegerLeft))
+		t.Fatalf("Expecting expression left to be %s, got %T", "ExpressionInteger", expressionIntegerLeft)
 	}
 	if expressionIntegerLeft.Value != valueLeft {
 		t.Fatalf("Expecting expression left integer value to be %q, got %q", valueLeft, expressionIntegerLeft.Value)
@@ -86,7 +79,7 @@ func testExpressionBinary(t *testing.T, source string, operator token.Type, valu
 	// Right expression.
 	expressionIntegerRight, ok := expressionPrefix.ExpressionLeft.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expression right to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionIntegerRight))
+		t.Fatalf("Expecting expression right to be %s, got %T", "ExpressionInteger", expressionIntegerRight)
 	}
 	if expressionIntegerRight.Value != valueLeft {
 		t.Fatalf("Expecting expression right integer value to be %q, got %q", valueRight, expressionIntegerLeft.Value)

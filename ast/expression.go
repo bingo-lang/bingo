@@ -15,7 +15,7 @@ type ExpressionBinary struct {
 	ExpressionRight Expression
 }
 
-func (eb ExpressionBinary) String() string {
+func (eb *ExpressionBinary) String() string {
 	return fmt.Sprintf("(%s %s %s)", eb.ExpressionLeft, eb.Operator.Type, eb.ExpressionRight)
 }
 
@@ -24,7 +24,7 @@ type ExpressionUnary struct {
 	Expression Expression
 }
 
-func (eu ExpressionUnary) String() string {
+func (eu *ExpressionUnary) String() string {
 	return fmt.Sprintf("%s%s", eu.Operator.Type, eu.Expression)
 }
 
@@ -32,6 +32,6 @@ type ExpressionInteger struct {
 	Value string
 }
 
-func (ei ExpressionInteger) String() string {
+func (ei *ExpressionInteger) String() string {
 	return ei.Value
 }

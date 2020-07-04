@@ -5,17 +5,24 @@ import (
 )
 
 func (p *Parser) parseStatement() ast.Statement {
-	switch {
-	default:
-		return p.parseStatementExpression()
+	if statement := p.parseStatementExpression(); !isNil(statement) && p.tokenIsStatementSeparator() {
+		p.advance()
+		return statement
 	}
+	return p.parseStatementError()
 }
 
 func (p *Parser) parseStatementExpression() *ast.StatementExpression {
-	expression := p.parseExpression(LOWEST)
-	if expression == nil {
-		// consume until eol
-		return nil
+	if expression := p.parseExpression(LOWEST); !isNil(expression) {
+		return &ast.StatementExpression{Expression: expression}
 	}
-	return &ast.StatementExpression{Expression: expression}
+	return nil
+}
+
+func (p *Parser) parseStatementError() *ast.StatementError {
+	statement := &ast.StatementError{InvalidToken: p.token}
+	for ; !p.tokenIsStatementSeparator(); p.advance() {
+	}
+	p.advance()
+	return statement
 }

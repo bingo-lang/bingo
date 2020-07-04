@@ -18,9 +18,9 @@ func New(source io.RuneReader) *Scanner {
 	return scanner
 }
 
-func (s *Scanner) NextToken() token.Token {
+func (s *Scanner) ScanToken() token.Token {
 	s.removeSpace()
-	token := s.nextToken()
+	token := s.scanToken()
 	s.removeSpace()
 	return token
 }

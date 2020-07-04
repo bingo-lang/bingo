@@ -24,8 +24,16 @@ func Start(stdin io.Reader, stdout io.Writer) {
 		line := input.Text()
 		source := strings.NewReader(line)
 		parser := parser.New(source)
-		program := parser.Parse()
-		gotten, _ := evaluator.Eval(program.Statements[0]).(*object.Integer)
-		fmt.Println(gotten.Value)
+		program := parser.ParseProgram()
+		if len(program.Errors) > 0 {
+			for _, err := range program.Errors {
+				fmt.Println(err)
+			}
+		} else {
+			for _, stmt := range program.Statements {
+				gotten, _ := evaluator.Eval(stmt).(*object.Integer)
+				fmt.Println(gotten.Value)
+			}
+		}
 	}
 }

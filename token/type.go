@@ -11,6 +11,7 @@ const (
 	MINUS
 	ASTERISK
 	SLASH
+	SEMICOLON
 
 	// Numbers.
 	INTEGER
@@ -30,6 +31,8 @@ func (t Type) String() string {
 		return "*"
 	case SLASH:
 		return "/"
+	case SEMICOLON:
+		return ";"
 
 	// Numbers.
 	case INTEGER:

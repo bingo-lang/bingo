@@ -3,7 +3,6 @@ package parser
 import (
 	"github.com/bingo-lang/bingo/ast"
 	"github.com/bingo-lang/bingo/token"
-	"reflect"
 	"strings"
 	"testing"
 )
@@ -26,17 +25,14 @@ func TestExpressionUnary(t *testing.T) {
 func TestExpressionInteger(t *testing.T) {
 	source := strings.NewReader(`237`)
 	parser := New(source)
-	gotten := parser.Parse()
-	if len(gotten.Statements) != 1 {
-		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
-	}
-	statement, ok := (gotten.Statements[0]).(*ast.StatementExpression)
+	statement := parser.parseStatement()
+	statementExpression, ok := (statement).(*ast.StatementExpression)
 	if !ok {
-		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
+		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
 	}
-	expressionInteger, ok := statement.Expression.(*ast.ExpressionInteger)
+	expressionInteger, ok := statementExpression.Expression.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expressionInteger to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionInteger))
+		t.Fatalf("Expecting expressionInteger to be %s, got %T", "ExpressionInteger", expressionInteger)
 	}
 	if expressionInteger.Value != "237" {
 		t.Fatalf("Expecting expressionInteger prefix integer value to be %q, got %q", "237", "237")
@@ -46,24 +42,21 @@ func TestExpressionInteger(t *testing.T) {
 func testExpressionUnary(t *testing.T, source string, operator token.Type, value string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
-	gotten := parser.Parse()
-	if len(gotten.Statements) != 1 {
-		t.Fatalf("Expecting 1 statement, got %d", len(gotten.Statements))
-	}
-	statement, ok := (gotten.Statements[0]).(*ast.StatementExpression)
+	statement := parser.parseStatement()
+	statementExpression, ok := (statement).(*ast.StatementExpression)
 	if !ok {
-		t.Fatalf("Expecting statement to be %q, got %q", "StatementExpression", reflect.TypeOf(statement))
+		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
 	}
-	expressionPrefix, ok := statement.Expression.(*ast.ExpressionUnary)
+	expressionPrefix, ok := statementExpression.Expression.(*ast.ExpressionUnary)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionUnary", reflect.TypeOf(expressionPrefix))
+		t.Fatalf("Expecting expression to be %s, got %T", "ExpressionUnary", expressionPrefix)
 	}
 	if expressionPrefix.Operator.Type != operator {
 		t.Fatalf("Expecting operator to be of type %q, got %q", operator, expressionPrefix.Operator.Type)
 	}
 	expressionInteger, ok := expressionPrefix.Expression.(*ast.ExpressionInteger)
 	if !ok {
-		t.Fatalf("Expecting expression to be %q, got %q", "ExpressionInteger", reflect.TypeOf(expressionInteger))
+		t.Fatalf("Expecting expression to be %s, got %T", "ExpressionInteger", expressionInteger)
 	}
 	if expressionInteger.Value != value {
 		t.Fatalf("Expecting expression prefix integer value to be %q, got %q", value, expressionInteger.Value)

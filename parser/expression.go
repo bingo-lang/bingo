@@ -4,11 +4,14 @@ import (
 	"github.com/bingo-lang/bingo/ast"
 )
 
-func (p *Parser) parseExpression(precedence Precedence) ast.Expression {
-	expression := p.parseExpressionUnary()
-	// TODO(tugorez): Handle possible errors.
-	for pr := p.precedence(); precedence < pr; pr = p.precedence() {
-		expression = p.parseExpressionBinary(expression, pr)
+func (p *Parser) parseExpression(precedence Precedence) (expression ast.Expression) {
+	if expression = p.parseExpressionUnary(); isNil(expression) {
+		return nil
+	}
+	for pr := p.precedence(); pr > precedence; pr = p.precedence() {
+		if expression = p.parseExpressionBinary(expression, pr); isNil(expression) {
+			return nil
+		}
 	}
 	return expression
 }

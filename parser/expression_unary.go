@@ -12,7 +12,6 @@ func (p *Parser) parseExpressionUnary() ast.Expression {
 	case token.PLUS, token.MINUS:
 		return p.parseExpressionPrefix()
 	default:
-		// TODO(tugorez): Handle possible errors.
 		return nil
 	}
 }
@@ -24,8 +23,11 @@ func (p *Parser) parseExpressionInteger() *ast.ExpressionInteger {
 }
 
 func (p *Parser) parseExpressionPrefix() *ast.ExpressionUnary {
-	expressionPrefix := &ast.ExpressionUnary{Operator: p.token}
+	prefix := &ast.ExpressionUnary{Operator: p.token}
 	p.advance()
-	expressionPrefix.Expression = p.parseExpression(LOWEST)
-	return expressionPrefix
+	if expression := p.parseExpression(LOWEST); !isNil(expression) {
+		prefix.Expression = expression
+		return prefix
+	}
+	return nil
 }

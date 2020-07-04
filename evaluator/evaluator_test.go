@@ -18,13 +18,13 @@ func TestEvalExpression(t *testing.T) {
 		{"10 * 1", 10},
 		{"10 / 2", 5},
 		{"+10 / 2", 5},
-		//{"10 + 1 * 1000", 1010},
+		{"10 + 1 * 1000", 1010},
 	}
 	for _, testCase := range testCases {
 		source := strings.NewReader(testCase.source)
 		expected := object.Integer{Value: testCase.expected}
 		parser := parser.New(source)
-		program := parser.Parse()
+		program := parser.ParseProgram()
 		gotten, ok := Eval(program.Statements[0]).(*object.Integer)
 		if !ok {
 			t.Fatalf("Expect an integer, got %T", gotten)
@@ -39,7 +39,7 @@ func TestEvalExpressionInteger(t *testing.T) {
 	source := strings.NewReader(`1`)
 	expected := object.Integer{Value: 1}
 	parser := parser.New(source)
-	program := parser.Parse()
+	program := parser.ParseProgram()
 	gotten, ok := Eval(program.Statements[0]).(*object.Integer)
 	if !ok {
 		t.Fatalf("Expect an integer, got %q", gotten)

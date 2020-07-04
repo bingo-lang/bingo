@@ -9,20 +9,31 @@ import (
 
 type Parser struct {
 	source *scanner.Scanner
-	token token.Token
+	token  token.Token
 }
 
 func New(source io.RuneReader) *Parser {
 	s := scanner.New(source)
 	parser := &Parser{source: s}
+	parser.advance()
 	return parser
 }
 
-func (p *Parser) Parse() *ast.Program {
-	program := ast.New()
-	for p.advance(); p.token.Type != token.EOF; p.advance() {
+func (p *Parser) ParseProgram() *ast.Program {
+	program := ast.NewProgram()
+	for {
+		if p.IsEOF() {
+			return program
+		}
 		statement := p.parseStatement()
-		program.Statements = append(program.Statements, statement)
+		if err, ok := statement.(*ast.StatementError); !ok {
+			program.Statements = append(program.Statements, statement)
+		} else {
+			program.Errors = append(program.Errors, err)
+		}
 	}
-	return program
+}
+
+func (p *Parser) IsEOF() bool {
+	return p.tokenIsEOF()
 }
