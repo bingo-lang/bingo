@@ -12,6 +12,8 @@ func (s *Scanner) scanToken() token.Token {
 		return s.scanNumber()
 	case isSymbol(s.char):
 		return s.scanSymbol()
+	case isLetter(s.char):
+		return s.scanWord()
 	default:
 		return s.scanUndefined()
 	}
@@ -47,12 +49,31 @@ func (s *Scanner) scanSymbol() token.Token {
 		symbol := string(s.char)
 		s.advance()
 		return token.New(token.SLASH, symbol)
+	case '=':
+		symbol := string(s.char)
+		s.advance()
+		return token.New(token.EQUALS, symbol)
 	case ';':
 		symbol := string(s.char)
 		s.advance()
 		return token.New(token.SEMICOLON, symbol)
 	default:
 		return s.scanUndefined()
+	}
+}
+
+func (s *Scanner) scanWord() token.Token {
+	word := ""
+	for ; isLetter(s.char); s.advance() {
+		word += string(s.char)
+	}
+	switch word {
+	case "let":
+		return token.New(token.LET, word)
+	case "int":
+		return token.New(token.INT, word)
+	default:
+		return token.New(token.IDENTIFIER, word)
 	}
 }
 

@@ -11,10 +11,18 @@ const (
 	MINUS
 	ASTERISK
 	SLASH
+
+	EQUALS
 	SEMICOLON
 
 	// Numbers.
 	INTEGER
+
+	// Words.
+	LET
+	IDENTIFIER
+
+	INT
 )
 
 func (t Type) String() string {
@@ -31,12 +39,24 @@ func (t Type) String() string {
 		return "*"
 	case SLASH:
 		return "/"
+
+	case EQUALS:
+		return "="
 	case SEMICOLON:
 		return ";"
 
 	// Numbers.
 	case INTEGER:
 		return "INTEGER"
+
+		//Words.
+	case LET:
+		return "let"
+	case IDENTIFIER:
+		return "identifier"
+
+	case INT:
+		return "int"
 
 	default:
 		return "UNDEFINED"
