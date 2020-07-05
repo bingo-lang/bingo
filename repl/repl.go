@@ -32,7 +32,7 @@ func Start(stdin io.Reader, stdout io.Writer) {
 		} else {
 			for _, stmt := range program.Statements {
 				gotten, _ := evaluator.Eval(stmt).(*object.Integer)
-				fmt.Println(gotten.Value)
+				fmt.Println(gotten)
 			}
 		}
 	}
