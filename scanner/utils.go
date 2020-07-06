@@ -14,7 +14,7 @@ func isLetter(token rune) bool {
 
 func isSymbol(token rune) bool {
 	switch token {
-	case '+', '-', '*', '/', '=', ';':
+	case '+', '-', '*', '/', '=', ';', '|', '&', '>', '<':
 		return true
 	default:
 		return false

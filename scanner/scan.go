@@ -52,11 +52,55 @@ func (s *Scanner) scanSymbol() token.Token {
 	case '=':
 		symbol := string(s.char)
 		s.advance()
-		return token.New(token.EQUALS, symbol)
+		if s.char == '=' {
+			symbol += string(s.char)
+			s.advance()
+			return token.New(token.EQUAL, symbol)
+		}
+		return token.New(token.ASSIGN, symbol)
 	case ';':
 		symbol := string(s.char)
 		s.advance()
 		return token.New(token.SEMICOLON, symbol)
+	case '|':
+		symbol := string(s.char)
+		s.advance()
+		if s.char == '|' {
+			symbol += string(s.char)
+			s.advance()
+			return token.New(token.OR, symbol)
+		} else {
+			return s.scanUndefined()
+		}
+	case '&':
+		symbol := string(s.char)
+		s.advance()
+		if s.char == '&' {
+			symbol += string(s.char)
+			s.advance()
+			return token.New(token.AND, symbol)
+		} else {
+			return s.scanUndefined()
+		}
+	case '>':
+		symbol := string(s.char)
+		s.advance()
+		if s.char == '=' {
+			symbol += string(s.char)
+			s.advance()
+			return token.New(token.GTE, symbol)
+		}
+		return token.New(token.GT, symbol)
+	case '<':
+		symbol := string(s.char)
+		s.advance()
+		if s.char == '=' {
+			symbol += string(s.char)
+			s.advance()
+			return token.New(token.LTE, symbol)
+		}
+		return token.New(token.LT, symbol)
+
 	default:
 		return s.scanUndefined()
 	}
@@ -72,6 +116,10 @@ func (s *Scanner) scanWord() token.Token {
 		return token.New(token.LET, word)
 	case "int":
 		return token.New(token.INT, word)
+	case "bool":
+		return token.New(token.BOOL, word)
+	case "true", "false":
+		return token.New(token.BOOLEAN, word)
 	default:
 		return token.New(token.IDENTIFIER, word)
 	}

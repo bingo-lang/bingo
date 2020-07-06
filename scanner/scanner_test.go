@@ -7,12 +7,17 @@ import (
 )
 
 func TestScanner(t *testing.T) {
-	source := strings.NewReader(`let x int = 10 + 1 - 1 * 1 / 1;`)
+	source := strings.NewReader(`
+		let x int = 10 + 1 - 1 * 1 / 1;
+		let y bool = true || false && true;
+		let z bool = 1 > 2 || 1 >= 2 && 1 < 2 && 1 <= 2 && 1 == 2;
+	`)
 	expectedTokens := []token.Token{
+		// First statement.
 		token.New(token.LET, "let"),
 		token.New(token.IDENTIFIER, "x"),
 		token.New(token.INT, "int"),
-		token.New(token.EQUALS, "="),
+		token.New(token.ASSIGN, "="),
 		token.New(token.INTEGER, "10"),
 		token.New(token.PLUS, "+"),
 		token.New(token.INTEGER, "1"),
@@ -23,16 +28,53 @@ func TestScanner(t *testing.T) {
 		token.New(token.SLASH, "/"),
 		token.New(token.INTEGER, "1"),
 		token.New(token.SEMICOLON, ";"),
+
+		// Second statement.
+		token.New(token.LET, "let"),
+		token.New(token.IDENTIFIER, "y"),
+		token.New(token.BOOL, "bool"),
+		token.New(token.ASSIGN, "="),
+		token.New(token.BOOLEAN, "true"),
+		token.New(token.OR, "||"),
+		token.New(token.BOOLEAN, "false"),
+		token.New(token.AND, "&&"),
+		token.New(token.BOOLEAN, "true"),
+		token.New(token.SEMICOLON, ";"),
+
+		// Third statement
+		token.New(token.LET, "let"),
+		token.New(token.IDENTIFIER, "z"),
+		token.New(token.BOOL, "bool"),
+		token.New(token.ASSIGN, "="),
+		token.New(token.INTEGER, "1"),
+		token.New(token.GT, ">"),
+		token.New(token.INTEGER, "2"),
+		token.New(token.OR, "||"),
+		token.New(token.INTEGER, "1"),
+		token.New(token.GTE, ">="),
+		token.New(token.INTEGER, "2"),
+		token.New(token.AND, "&&"),
+		token.New(token.INTEGER, "1"),
+		token.New(token.LT, "<"),
+		token.New(token.INTEGER, "2"),
+		token.New(token.AND, "&&"),
+		token.New(token.INTEGER, "1"),
+		token.New(token.LTE, "<="),
+		token.New(token.INTEGER, "2"),
+		token.New(token.AND, "&&"),
+		token.New(token.INTEGER, "1"),
+		token.New(token.EQUAL, "=="),
+		token.New(token.INTEGER, "2"),
+
+		token.New(token.SEMICOLON, ";"),
+
 		token.New(token.EOF, ""),
 	}
 	scanner := New(source)
 	for _, expectedToken := range expectedTokens {
 		nextToken := scanner.ScanToken()
-		if nextToken.Type != expectedToken.Type {
-			t.Fatalf("Invalid token type. Expecting %q, got %q", expectedToken.Type, nextToken.Type)
-		}
-		if nextToken.Value != expectedToken.Value {
-			t.Fatalf("Invalid token value. Expecting %q, got %q", expectedToken.Value, nextToken.Value)
+		if nextToken.Type != expectedToken.Type || nextToken.Value != expectedToken.Value {
+			t.Fatalf("Invalid token. Expecting %q, got %q", expectedToken, nextToken)
 		}
 	}
 }

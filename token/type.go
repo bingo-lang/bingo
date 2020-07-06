@@ -1,64 +1,40 @@
 package token
 
-type Type uint
+type Type string
 
 const (
-	UNDEFINED Type = iota
-	EOF
+	UNDEFINED = "undefined"
+	EOF       = "EOF"
 
 	// Symbols.
-	PLUS
-	MINUS
-	ASTERISK
-	SLASH
+	PLUS     = "+"
+	MINUS    = "-"
+	ASTERISK = "*"
+	SLASH    = "/"
+	OR       = "||"
+	AND      = "&&"
+	GT       = ">"
+	GTE      = ">="
+	LT       = "<"
+	LTE      = "<="
+	EQUAL    = "=="
 
-	EQUALS
-	SEMICOLON
+	ASSIGN    = "="
+	SEMICOLON = ";"
 
 	// Numbers.
-	INTEGER
+	INTEGER = "integer"
 
 	// Words.
-	LET
-	IDENTIFIER
+	LET        = "let"
+	IDENTIFIER = "identifier"
 
-	INT
+	INT  = "int"
+	BOOL = "bool"
+
+	BOOLEAN = "boolean" // It reprensets the true or false constants
 )
 
 func (t Type) String() string {
-	switch t {
-	case EOF:
-		return "EOF"
-
-	// Symbols.
-	case PLUS:
-		return "+"
-	case MINUS:
-		return "-"
-	case ASTERISK:
-		return "*"
-	case SLASH:
-		return "/"
-
-	case EQUALS:
-		return "="
-	case SEMICOLON:
-		return ";"
-
-	// Numbers.
-	case INTEGER:
-		return "INTEGER"
-
-		//Words.
-	case LET:
-		return "let"
-	case IDENTIFIER:
-		return "identifier"
-
-	case INT:
-		return "int"
-
-	default:
-		return "UNDEFINED"
-	}
+	return string(t)
 }
