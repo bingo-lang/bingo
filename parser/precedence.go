@@ -8,6 +8,7 @@ type Precedence int
 
 const (
 	LOWEST = iota
+	LOGICAL
 	ADDITION
 	MULTIPLICATION
 )
@@ -18,6 +19,8 @@ func (p *Parser) precedence() Precedence {
 		return ADDITION
 	case token.ASTERISK, token.SLASH:
 		return MULTIPLICATION
+	case token.OR, token.AND, token.GT, token.GTE, token.LT, token.LTE, token.EQUAL:
+		return LOGICAL
 	default:
 		return LOWEST
 	}
