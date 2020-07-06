@@ -100,6 +100,10 @@ func (s *Scanner) scanSymbol() token.Token {
 			return token.New(token.LTE, symbol)
 		}
 		return token.New(token.LT, symbol)
+	case '!':
+		symbol := string(s.char)
+		s.advance()
+		return token.New(token.BANG, symbol)
 
 	default:
 		return s.scanUndefined()

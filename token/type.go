@@ -18,6 +18,7 @@ const (
 	LT       = "<"
 	LTE      = "<="
 	EQUAL    = "=="
+	BANG     = "!"
 
 	ASSIGN    = "="
 	SEMICOLON = ";"

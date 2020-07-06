@@ -11,6 +11,7 @@ func TestScanner(t *testing.T) {
 		let x int = 10 + 1 - 1 * 1 / 1;
 		let y bool = true || false && true;
 		let z bool = 1 > 2 || 1 >= 2 && 1 < 2 && 1 <= 2 && 1 == 2;
+		let a bool = !true;
 	`)
 	expectedTokens := []token.Token{
 		// First statement.
@@ -65,7 +66,15 @@ func TestScanner(t *testing.T) {
 		token.New(token.INTEGER, "1"),
 		token.New(token.EQUAL, "=="),
 		token.New(token.INTEGER, "2"),
+		token.New(token.SEMICOLON, ";"),
 
+		// Fourth statement
+		token.New(token.LET, "let"),
+		token.New(token.IDENTIFIER, "a"),
+		token.New(token.BOOL, "bool"),
+		token.New(token.ASSIGN, "="),
+		token.New(token.BANG, "!"),
+		token.New(token.BOOLEAN, "true"),
 		token.New(token.SEMICOLON, ";"),
 
 		token.New(token.EOF, ""),
