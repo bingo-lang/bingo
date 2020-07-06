@@ -7,19 +7,15 @@ import (
 
 func (p *Parser) parseExpressionUnary() ast.Expression {
 	switch p.token.Type {
-	case token.INTEGER:
-		return p.parseExpressionInteger()
 	case token.PLUS, token.MINUS:
 		return p.parseExpressionPrefix()
+	case token.INTEGER:
+		return p.parseExpressionInteger()
+	case token.BOOLEAN:
+		return p.parseExpressionBoolean()
 	default:
 		return nil
 	}
-}
-
-func (p *Parser) parseExpressionInteger() *ast.ExpressionInteger {
-	value := p.token.Value
-	p.advance()
-	return &ast.ExpressionInteger{Value: value}
 }
 
 func (p *Parser) parseExpressionPrefix() *ast.ExpressionUnary {
@@ -30,4 +26,16 @@ func (p *Parser) parseExpressionPrefix() *ast.ExpressionUnary {
 		return prefix
 	}
 	return nil
+}
+
+func (p *Parser) parseExpressionInteger() *ast.ExpressionInteger {
+	value := p.token.Value
+	p.advance()
+	return &ast.ExpressionInteger{Value: value}
+}
+
+func (p *Parser) parseExpressionBoolean() *ast.ExpressionBoolean {
+	value := p.token.Value
+	p.advance()
+	return &ast.ExpressionBoolean{Value: value}
 }

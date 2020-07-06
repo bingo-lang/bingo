@@ -35,3 +35,11 @@ type ExpressionInteger struct {
 func (ei *ExpressionInteger) String() string {
 	return ei.Value
 }
+
+type ExpressionBoolean struct {
+	Value string
+}
+
+func (eb *ExpressionBoolean) String() string {
+	return eb.Value
+}
