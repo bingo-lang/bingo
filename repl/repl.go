@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/bingo-lang/bingo/evaluator"
-	"github.com/bingo-lang/bingo/object"
 	"github.com/bingo-lang/bingo/parser"
 	"io"
 	"strings"
@@ -31,7 +30,7 @@ func Start(stdin io.Reader, stdout io.Writer) {
 			}
 		} else {
 			for _, stmt := range program.Statements {
-				gotten, _ := evaluator.Eval(stmt).(*object.Integer)
+				gotten := evaluator.Eval(stmt)
 				fmt.Println(gotten)
 			}
 		}

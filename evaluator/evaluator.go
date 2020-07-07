@@ -17,6 +17,8 @@ func Eval(node ast.Node) object.Object {
 
 func evalExpression(node ast.Expression) object.Object {
 	switch node := node.(type) {
+	case *ast.ExpressionBoolean:
+		return evalExpressionBoolean(node)
 	case *ast.ExpressionInteger:
 		return evalExpressionInteger(node)
 	case *ast.ExpressionUnary:
@@ -24,6 +26,7 @@ func evalExpression(node ast.Expression) object.Object {
 	case *ast.ExpressionBinary:
 		return evalExpressionBinary(node)
 	default:
+		// This is an error
 		return nil
 	}
 }
@@ -41,6 +44,7 @@ func evalExpressionBinary(node *ast.ExpressionBinary) object.Object {
 	case token.SLASH:
 		return &object.Integer{Value: left.Value / right.Value}
 	default:
+		// This is an error
 		return nil
 	}
 }
@@ -51,7 +55,10 @@ func evalExpressionUnary(node *ast.ExpressionUnary) object.Object {
 		return evalExpression(node.Expression)
 	case token.MINUS:
 		return evalMinus(node.Expression)
+	case token.BANG:
+		return evalBang(node.Expression)
 	default:
+		// This is an error
 		return nil
 	}
 }
@@ -62,6 +69,18 @@ func evalMinus(node ast.Expression) object.Object {
 		ob.Value = -ob.Value
 		return ob
 	default:
+		// This is an error
+		return nil
+	}
+}
+
+func evalBang(node ast.Expression) object.Object {
+	switch ob := evalExpression(node).(type) {
+	case *object.Boolean:
+		ob.Value = !ob.Value
+		return ob
+	default:
+		// This is an error
 		return nil
 	}
 }

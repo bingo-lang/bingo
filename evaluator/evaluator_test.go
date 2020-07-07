@@ -48,3 +48,17 @@ func TestEvalExpressionInteger(t *testing.T) {
 		t.Fatalf("Expect value to be %d, got %d", expected.Value, gotten.Value)
 	}
 }
+
+func TestEvalExpressionBoolean(t *testing.T) {
+	source := strings.NewReader(`true`)
+	expected := object.Boolean{Value: true}
+	parser := parser.New(source)
+	program := parser.ParseProgram()
+	gotten, ok := Eval(program.Statements[0]).(*object.Boolean)
+	if !ok {
+		t.Fatalf("Expect a boolean, got %q", gotten)
+	}
+	if gotten.Value != expected.Value {
+		t.Fatalf("Expect value to be %t, got %t", expected.Value, gotten.Value)
+	}
+}

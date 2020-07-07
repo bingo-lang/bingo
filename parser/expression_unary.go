@@ -7,7 +7,7 @@ import (
 
 func (p *Parser) parseExpressionUnary() ast.Expression {
 	switch p.token.Type {
-	case token.PLUS, token.MINUS:
+	case token.PLUS, token.MINUS, token.BANG:
 		return p.parseExpressionPrefix()
 	case token.INTEGER:
 		return p.parseExpressionInteger()
