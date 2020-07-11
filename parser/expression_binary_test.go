@@ -52,11 +52,11 @@ func testExpressionBinary(t *testing.T, source string, operator token.Type, valu
 	reader := strings.NewReader(source)
 	parser := New(reader)
 	statement := parser.parseStatement()
-	statementExpression, ok := (statement).(*ast.StatementExpression)
+	statementExpression, ok := (statement).(ast.StatementExpression)
 	if !ok {
 		t.Fatalf("Expecting %q statement to be %s, got %T", source, "StatementExpression", statement)
 	}
-	expressionPrefix, ok := statementExpression.Expression.(*ast.ExpressionBinary)
+	expressionPrefix, ok := statementExpression.Expression.(ast.ExpressionBinary)
 	if !ok {
 		t.Fatalf("Expecting %q expression to be %s, got %T", source, "ExpressionBinary", expressionPrefix)
 	}
@@ -64,7 +64,7 @@ func testExpressionBinary(t *testing.T, source string, operator token.Type, valu
 		t.Fatalf("Expecting operator to be of type %q, got %q", operator, expressionPrefix.Operator.Type)
 	}
 	// Left expression.
-	expressionIntegerLeft, ok := expressionPrefix.ExpressionLeft.(*ast.ExpressionInteger)
+	expressionIntegerLeft, ok := expressionPrefix.ExpressionLeft.(ast.ExpressionInteger)
 	if !ok {
 		t.Fatalf("Expecting expression left to be %s, got %T", "ExpressionInteger", expressionIntegerLeft)
 	}
@@ -72,7 +72,7 @@ func testExpressionBinary(t *testing.T, source string, operator token.Type, valu
 		t.Fatalf("Expecting expression's left value to be %q, got %q", valueLeft, expressionIntegerLeft.Value)
 	}
 	// Right expression.
-	expressionIntegerRight, ok := expressionPrefix.ExpressionLeft.(*ast.ExpressionInteger)
+	expressionIntegerRight, ok := expressionPrefix.ExpressionLeft.(ast.ExpressionInteger)
 	if !ok {
 		t.Fatalf("Expecting expression right to be %s, got %T", "ExpressionInteger", expressionIntegerRight)
 	}
@@ -85,7 +85,7 @@ func testOperatorPrecedence(t *testing.T, source string, expected string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
 	statement := parser.parseStatement()
-	statementExpression, ok := (statement).(*ast.StatementExpression)
+	statementExpression, ok := (statement).(ast.StatementExpression)
 	if !ok {
 		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
 	}

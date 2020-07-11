@@ -1,22 +1,19 @@
 package ast
 
-import (
-	"fmt"
-	"github.com/bingo-lang/bingo/token"
-)
-
 type Statement interface {
-	Node
+	String() string
+	HasErrors() bool
 }
 
 type StatementExpression struct {
 	Expression
+	Invalid bool
 }
 
-type StatementError struct {
-	InvalidToken token.Token
+func (se StatementExpression) HasErrors() bool {
+	return se.Invalid || se.Expression.HasErrors()
 }
 
-func (se *StatementError) String() string {
-	return fmt.Sprintf("SyntaxError: Invalid token %s", se.InvalidToken.Value)
+func (se StatementExpression) String() string {
+	return se.Expression.String()
 }

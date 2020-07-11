@@ -19,19 +19,12 @@ func New(source io.RuneReader) *Parser {
 	return parser
 }
 
-func (p *Parser) ParseProgram() *ast.Program {
+func (p *Parser) ParseProgram() ast.Program {
 	program := ast.NewProgram()
-	for {
-		if p.IsEOF() {
-			return program
-		}
-		statement := p.parseStatement()
-		if err, ok := statement.(*ast.StatementError); !ok {
-			program.Statements = append(program.Statements, statement)
-		} else {
-			program.Errors = append(program.Errors, err)
-		}
+	for !p.tokenIsEOF() {
+		program.Statements = append(program.Statements, p.parseStatement())
 	}
+	return program
 }
 
 func (p *Parser) IsEOF() bool {

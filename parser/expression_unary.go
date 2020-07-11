@@ -7,35 +7,35 @@ import (
 
 func (p *Parser) parseExpressionUnary() ast.Expression {
 	switch p.token.Type {
-	case token.PLUS, token.MINUS, token.BANG:
-		return p.parseExpressionPrefix()
 	case token.INTEGER:
 		return p.parseExpressionInteger()
 	case token.BOOLEAN:
 		return p.parseExpressionBoolean()
 	default:
-		return nil
+		return p.parseExpressionPrefix()
 	}
 }
 
-func (p *Parser) parseExpressionPrefix() *ast.ExpressionUnary {
-	prefix := &ast.ExpressionUnary{Operator: p.token}
-	p.advance()
-	if expression := p.parseExpression(LOWEST); !isNil(expression) {
-		prefix.Expression = expression
-		return prefix
+func (p *Parser) parseExpressionPrefix() ast.ExpressionUnary {
+	if p.tokenIsUnaryOperator() {
+		return ast.ExpressionUnary{
+			Operator:   p.advance(),
+			Expression: p.parseExpression(LOWEST),
+		}
 	}
-	return nil
+	// Invalid operator.
+	return ast.ExpressionUnary{Operator: p.token, Invalid: true}
+
 }
 
-func (p *Parser) parseExpressionInteger() *ast.ExpressionInteger {
+func (p *Parser) parseExpressionInteger() ast.ExpressionInteger {
 	value := p.token.Value
 	p.advance()
-	return &ast.ExpressionInteger{Value: value}
+	return ast.ExpressionInteger{Value: value}
 }
 
-func (p *Parser) parseExpressionBoolean() *ast.ExpressionBoolean {
+func (p *Parser) parseExpressionBoolean() ast.ExpressionBoolean {
 	value := p.token.Value
 	p.advance()
-	return &ast.ExpressionBoolean{Value: value}
+	return ast.ExpressionBoolean{Value: value}
 }

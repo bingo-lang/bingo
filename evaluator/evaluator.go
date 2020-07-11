@@ -8,7 +8,7 @@ import (
 
 func Eval(node ast.Node) object.Object {
 	switch node := node.(type) {
-	case *ast.StatementExpression:
+	case ast.StatementExpression:
 		return evalExpression(node.Expression)
 	default:
 		return nil
@@ -17,13 +17,13 @@ func Eval(node ast.Node) object.Object {
 
 func evalExpression(node ast.Expression) object.Object {
 	switch node := node.(type) {
-	case *ast.ExpressionBoolean:
+	case ast.ExpressionBoolean:
 		return evalExpressionBoolean(node)
-	case *ast.ExpressionInteger:
+	case ast.ExpressionInteger:
 		return evalExpressionInteger(node)
-	case *ast.ExpressionUnary:
+	case ast.ExpressionUnary:
 		return evalExpressionUnary(node)
-	case *ast.ExpressionBinary:
+	case ast.ExpressionBinary:
 		return evalExpressionBinary(node)
 	default:
 		// This is an error
@@ -31,7 +31,7 @@ func evalExpression(node ast.Expression) object.Object {
 	}
 }
 
-func evalExpressionBinary(node *ast.ExpressionBinary) object.Object {
+func evalExpressionBinary(node ast.ExpressionBinary) object.Object {
 	left, _ := evalExpression(node.ExpressionLeft).(*object.Integer)
 	right, _ := evalExpression(node.ExpressionRight).(*object.Integer)
 	switch node.Operator.Type {
@@ -49,7 +49,7 @@ func evalExpressionBinary(node *ast.ExpressionBinary) object.Object {
 	}
 }
 
-func evalExpressionUnary(node *ast.ExpressionUnary) object.Object {
+func evalExpressionUnary(node ast.ExpressionUnary) object.Object {
 	switch node.Operator.Type {
 	case token.PLUS:
 		return evalExpression(node.Expression)

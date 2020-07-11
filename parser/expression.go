@@ -5,13 +5,9 @@ import (
 )
 
 func (p *Parser) parseExpression(precedence Precedence) (expression ast.Expression) {
-	if expression = p.parseExpressionUnary(); isNil(expression) {
-		return nil
-	}
-	for pr := p.precedence(); pr > precedence; pr = p.precedence() {
-		if expression = p.parseExpressionBinary(expression, pr); isNil(expression) {
-			return nil
-		}
+	expression = p.parseExpressionUnary()
+	for pr := p.precedence(); pr > precedence && !expression.HasErrors(); pr = p.precedence() {
+		expression = p.parseExpressionBinary(expression, pr)
 	}
 	return expression
 }
