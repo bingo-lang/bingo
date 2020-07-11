@@ -8,15 +8,16 @@ import (
 
 func TestScanner(t *testing.T) {
 	source := strings.NewReader(`
-		let x int = 10 + 1 - 1 * 1 / 1;
-		let y bool = true || false && true;
-		let z bool = 1 > 2 || 1 >= 2 && 1 < 2 && 1 <= 2 && 1 == 2;
-		let a bool = !true;
+		let a int = 10 + 1 - 1 * 1 / 1;
+		let b bool = true || false && true;
+		let c bool = 1 > 2 || 1 >= 2 && 1 < 2 && 1 <= 2 && 1 == 2;
+		let d bool = !true;
+		let e bool = true == true;
 	`)
 	expectedTokens := []token.Token{
 		// First statement.
 		token.New(token.LET, "let"),
-		token.New(token.IDENTIFIER, "x"),
+		token.New(token.IDENTIFIER, "a"),
 		token.New(token.INT, "int"),
 		token.New(token.ASSIGN, "="),
 		token.New(token.INTEGER, "10"),
@@ -32,7 +33,7 @@ func TestScanner(t *testing.T) {
 
 		// Second statement.
 		token.New(token.LET, "let"),
-		token.New(token.IDENTIFIER, "y"),
+		token.New(token.IDENTIFIER, "b"),
 		token.New(token.BOOL, "bool"),
 		token.New(token.ASSIGN, "="),
 		token.New(token.BOOLEAN, "true"),
@@ -44,7 +45,7 @@ func TestScanner(t *testing.T) {
 
 		// Third statement
 		token.New(token.LET, "let"),
-		token.New(token.IDENTIFIER, "z"),
+		token.New(token.IDENTIFIER, "c"),
 		token.New(token.BOOL, "bool"),
 		token.New(token.ASSIGN, "="),
 		token.New(token.INTEGER, "1"),
@@ -70,10 +71,20 @@ func TestScanner(t *testing.T) {
 
 		// Fourth statement
 		token.New(token.LET, "let"),
-		token.New(token.IDENTIFIER, "a"),
+		token.New(token.IDENTIFIER, "d"),
 		token.New(token.BOOL, "bool"),
 		token.New(token.ASSIGN, "="),
 		token.New(token.BANG, "!"),
+		token.New(token.BOOLEAN, "true"),
+		token.New(token.SEMICOLON, ";"),
+
+		// Fifth statement
+		token.New(token.LET, "let"),
+		token.New(token.IDENTIFIER, "e"),
+		token.New(token.BOOL, "bool"),
+		token.New(token.ASSIGN, "="),
+		token.New(token.BOOLEAN, "true"),
+		token.New(token.EQUAL, "=="),
 		token.New(token.BOOLEAN, "true"),
 		token.New(token.SEMICOLON, ";"),
 
