@@ -23,6 +23,7 @@ func TestExpressionBinary(t *testing.T) {
 		{"1 < 0", token.LT, "1", "0"},
 		{"1 <= 0", token.LTE, "1", "0"},
 		{"1 == 0", token.EQUAL, "1", "0"},
+		{"true == false", token.EQUAL, "true", "false"},
 	}
 	for _, testCase := range testCases {
 		testExpressionBinary(t, testCase.source, testCase.operator, testCase.leftValue, testCase.rightValue)

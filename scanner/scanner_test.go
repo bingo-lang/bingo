@@ -93,7 +93,7 @@ func TestScanner(t *testing.T) {
 	scanner := New(source)
 	for _, expectedToken := range expectedTokens {
 		nextToken := scanner.ScanToken()
-		if nextToken.Type != expectedToken.Type || nextToken.Value != expectedToken.Value {
+		if !expectedToken.Equals(nextToken) {
 			t.Fatalf("Invalid token. Expecting %q, got %q", expectedToken, nextToken)
 		}
 	}
