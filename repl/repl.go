@@ -23,14 +23,12 @@ func Start(stdin io.Reader, stdout io.Writer) {
 		line := input.Text()
 		source := strings.NewReader(line)
 		parser := parser.New(source)
-		program := parser.ParseProgram()
-		if program.HasErrors() {
-			fmt.Println(program)
-		} else {
-			for _, stmt := range program.Statements {
-				gotten := evaluator.Eval(stmt)
-				fmt.Println(gotten)
+		if program, err := parser.ParseProgram(); err == nil {
+			for _, statement := range program.Statements {
+				fmt.Println(evaluator.Eval(statement))
 			}
+		} else {
+			fmt.Printf("Syntax Error: %s\n", err)
 		}
 	}
 }

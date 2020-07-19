@@ -24,7 +24,10 @@ func TestEvalExpression(t *testing.T) {
 		source := strings.NewReader(testCase.source)
 		expected := object.Integer{Value: testCase.expected}
 		parser := parser.New(source)
-		program := parser.ParseProgram()
+		program, err := parser.ParseProgram()
+		if err != nil {
+			t.Fatal(err)
+		}
 		gotten, ok := Eval(program.Statements[0]).(*object.Integer)
 		if !ok {
 			t.Fatalf("Expect an integer, got %T", gotten)
@@ -39,7 +42,10 @@ func TestEvalExpressionInteger(t *testing.T) {
 	source := strings.NewReader(`1`)
 	expected := object.Integer{Value: 1}
 	parser := parser.New(source)
-	program := parser.ParseProgram()
+	program, err := parser.ParseProgram()
+	if err != nil {
+		t.Fatal(err)
+	}
 	gotten, ok := Eval(program.Statements[0]).(*object.Integer)
 	if !ok {
 		t.Fatalf("Expect an integer, got %q", gotten)
@@ -53,7 +59,10 @@ func TestEvalExpressionBoolean(t *testing.T) {
 	source := strings.NewReader(`true`)
 	expected := object.Boolean{Value: true}
 	parser := parser.New(source)
-	program := parser.ParseProgram()
+	program, err := parser.ParseProgram()
+	if err != nil {
+		t.Fatal(err)
+	}
 	gotten, ok := Eval(program.Statements[0]).(*object.Boolean)
 	if !ok {
 		t.Fatalf("Expect a boolean, got %q", gotten)

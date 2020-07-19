@@ -10,9 +10,9 @@ func TestParseStatementError(t *testing.T) {
 	for _, testCase := range testCases {
 		reader := strings.NewReader(testCase)
 		parser := New(reader)
-		statement := parser.parseStatement()
-		if !statement.HasErrors() {
-			t.Fatalf("Expecting %q to has errors got %s", testCase, statement)
+		statement, err := parser.parseStatement()
+		if err == nil {
+			t.Fatalf("Expecting that input %q throw an error, instead got %s", testCase, statement)
 		}
 		if !parser.IsEOF() {
 			t.Fatal("Expecting parser to consume all the tokens until statement separator")

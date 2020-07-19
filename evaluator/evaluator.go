@@ -6,10 +6,10 @@ import (
 	"github.com/bingo-lang/bingo/token"
 )
 
-func Eval(node ast.Node) object.Object {
-	switch node := node.(type) {
+func Eval(statement ast.Statement) object.Object {
+	switch statement := statement.(type) {
 	case ast.StatementExpression:
-		return evalExpression(node.Expression)
+		return evalExpression(statement.Expression)
 	default:
 		return nil
 	}

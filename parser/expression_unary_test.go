@@ -36,7 +36,10 @@ func TestExpressionValue(t *testing.T) {
 	for _, testCase := range testCases {
 		source := strings.NewReader(testCase.source)
 		parser := New(source)
-		statement := parser.parseStatement()
+		statement, err := parser.parseStatement()
+		if err != nil {
+			t.Fatal(err)
+		}
 		statementExpression, ok := (statement).(ast.StatementExpression)
 		if !ok {
 			t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
@@ -55,7 +58,10 @@ func TestExpressionValue(t *testing.T) {
 func testExpressionUnary(t *testing.T, source string, operator token.Type, expectedExpression ast.Expression) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
-	statement := parser.parseStatement()
+	statement, err := parser.parseStatement()
+	if err != nil {
+		t.Fatal(err)
+	}
 	statementExpression, ok := (statement).(ast.StatementExpression)
 	if !ok {
 		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)

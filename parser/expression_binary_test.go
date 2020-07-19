@@ -51,7 +51,10 @@ func TestOperatorPrecedence(t *testing.T) {
 func testExpressionBinary(t *testing.T, source string, operator token.Type, valueLeft, valueRight string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
-	statement := parser.parseStatement()
+	statement, err := parser.parseStatement()
+	if err != nil {
+		t.Fatal(err)
+	}
 	statementExpression, ok := (statement).(ast.StatementExpression)
 	if !ok {
 		t.Fatalf("Expecting %q statement to be %s, got %T", source, "StatementExpression", statement)
@@ -84,7 +87,10 @@ func testExpressionBinary(t *testing.T, source string, operator token.Type, valu
 func testOperatorPrecedence(t *testing.T, source string, expected string) {
 	reader := strings.NewReader(source)
 	parser := New(reader)
-	statement := parser.parseStatement()
+	statement, err := parser.parseStatement()
+	if err != nil {
+		t.Fatal(err)
+	}
 	statementExpression, ok := (statement).(ast.StatementExpression)
 	if !ok {
 		t.Fatalf("Expecting statement to be %s, got %T", "StatementExpression", statement)
