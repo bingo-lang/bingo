@@ -28,7 +28,11 @@ func TestEvalExpression(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		gotten, ok := Eval(program.Statements[0]).(*object.Integer)
+		obj, err := Eval(program.Statements[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotten, ok := obj.(object.Integer)
 		if !ok {
 			t.Fatalf("Expect an integer, got %T", gotten)
 		}
@@ -46,7 +50,11 @@ func TestEvalExpressionInteger(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	gotten, ok := Eval(program.Statements[0]).(*object.Integer)
+	obj, err := Eval(program.Statements[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotten, ok := obj.(object.Integer)
 	if !ok {
 		t.Fatalf("Expect an integer, got %q", gotten)
 	}
@@ -63,7 +71,11 @@ func TestEvalExpressionBoolean(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	gotten, ok := Eval(program.Statements[0]).(*object.Boolean)
+	obj, err := Eval(program.Statements[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotten, ok := obj.(object.Boolean)
 	if !ok {
 		t.Fatalf("Expect a boolean, got %q", gotten)
 	}

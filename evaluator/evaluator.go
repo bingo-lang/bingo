@@ -1,86 +1,82 @@
 package evaluator
 
 import (
+	"fmt"
 	"github.com/bingo-lang/bingo/ast"
 	"github.com/bingo-lang/bingo/object"
 	"github.com/bingo-lang/bingo/token"
 )
 
-func Eval(statement ast.Statement) object.Object {
+func Eval(statement ast.Statement) (object.Object, error) {
 	switch statement := statement.(type) {
 	case ast.StatementExpression:
 		return evalExpression(statement.Expression)
 	default:
-		return nil
+		return nil, fmt.Errorf("Unsupported statement %T", statement)
 	}
 }
 
-func evalExpression(node ast.Expression) object.Object {
-	switch node := node.(type) {
-	case ast.ExpressionBoolean:
-		return evalExpressionBoolean(node)
-	case ast.ExpressionInteger:
-		return evalExpressionInteger(node)
-	case ast.ExpressionUnary:
-		return evalExpressionUnary(node)
+func evalExpression(expression ast.Expression) (object.Object, error) {
+	switch expression := expression.(type) {
 	case ast.ExpressionBinary:
-		return evalExpressionBinary(node)
+		return evalExpressionBinary(expression)
+	case ast.ExpressionUnary:
+		return evalExpressionUnary(expression)
+	case ast.ExpressionInteger:
+		return evalExpressionInteger(expression)
+	case ast.ExpressionBoolean:
+		return evalExpressionBoolean(expression)
 	default:
-		// This is an error
-		return nil
+		return nil, fmt.Errorf("Unsupported expression %q of type %T", expression, expression)
 	}
 }
 
-func evalExpressionBinary(node ast.ExpressionBinary) object.Object {
-	left, _ := evalExpression(node.ExpressionLeft).(*object.Integer)
-	right, _ := evalExpression(node.ExpressionRight).(*object.Integer)
-	switch node.Operator.Type {
+func evalExpressionBinary(expressionBinary ast.ExpressionBinary) (object.Object, error) {
+	left, err := evalExpression(expressionBinary.ExpressionLeft)
+	if err != nil {
+		return nil, err
+	}
+	right, err := evalExpression(expressionBinary.ExpressionRight)
+	if err != nil {
+		return nil, err
+	}
+	switch expressionBinary.Operator.Type {
 	case token.PLUS:
-		return &object.Integer{Value: left.Value + right.Value}
+		return evalBinaryPlus(left, right)
 	case token.MINUS:
-		return &object.Integer{Value: left.Value - right.Value}
+		return evalBinaryMinus(left, right)
 	case token.ASTERISK:
-		return &object.Integer{Value: left.Value * right.Value}
+		return evalBinaryAsterisk(left, right)
 	case token.SLASH:
-		return &object.Integer{Value: left.Value / right.Value}
+		return evalBinarySlash(left, right)
+	case token.GT:
+		return evalBinaryGT(left, right)
+	case token.GTE:
+		return evalBinaryGTE(left, right)
+	case token.LT:
+		return evalBinaryLT(left, right)
+	case token.LTE:
+		return evalBinaryLTE(left, right)
+	case token.EQUAL:
+		return evalBinaryEqual(left, right)
+	case token.AND:
+		return evalBinaryAnd(left, right)
+	case token.OR:
+		return evalBinaryOr(left, right)
 	default:
-		// This is an error
-		return nil
+		return nil, fmt.Errorf("Unsupported binary operator %q", expressionBinary.Operator.Value)
 	}
 }
 
-func evalExpressionUnary(node ast.ExpressionUnary) object.Object {
-	switch node.Operator.Type {
+func evalExpressionUnary(expressionUnary ast.ExpressionUnary) (object.Object, error) {
+	switch expressionUnary.Operator.Type {
 	case token.PLUS:
-		return evalExpression(node.Expression)
+		return evalExpression(expressionUnary.Expression)
 	case token.MINUS:
-		return evalMinus(node.Expression)
+		return evalUnaryMinus(expressionUnary.Expression)
 	case token.BANG:
-		return evalBang(node.Expression)
+		return evalUnaryBang(expressionUnary.Expression)
 	default:
-		// This is an error
-		return nil
-	}
-}
-
-func evalMinus(node ast.Expression) object.Object {
-	switch ob := evalExpression(node).(type) {
-	case *object.Integer:
-		ob.Value = -ob.Value
-		return ob
-	default:
-		// This is an error
-		return nil
-	}
-}
-
-func evalBang(node ast.Expression) object.Object {
-	switch ob := evalExpression(node).(type) {
-	case *object.Boolean:
-		ob.Value = !ob.Value
-		return ob
-	default:
-		// This is an error
-		return nil
+		return nil, fmt.Errorf("Unsupported binary operator %q", expressionUnary.Operator.Value)
 	}
 }

@@ -25,7 +25,12 @@ func Start(stdin io.Reader, stdout io.Writer) {
 		parser := parser.New(source)
 		if program, err := parser.ParseProgram(); err == nil {
 			for _, statement := range program.Statements {
-				fmt.Println(evaluator.Eval(statement))
+				object, err := evaluator.Eval(statement)
+				if err == nil {
+					fmt.Println(object)
+				} else {
+					fmt.Printf("Runtime error: %s\n", err)
+				}
 			}
 		} else {
 			fmt.Printf("Syntax Error: %s\n", err)

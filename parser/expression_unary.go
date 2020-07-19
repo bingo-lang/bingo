@@ -27,7 +27,7 @@ func (p *Parser) parseExpressionPrefix() (expressionUnary ast.ExpressionUnary, e
 			}
 		}
 	} else {
-		err = fmt.Errorf("Token %q is not a unary operator", p.token)
+		err = fmt.Errorf("Token %q is not a unary operator", p.token.Value)
 	}
 	return
 }

@@ -6,7 +6,8 @@ import (
 	"strconv"
 )
 
-func evalExpressionInteger(node ast.ExpressionInteger) *object.Integer {
+func evalExpressionInteger(node ast.ExpressionInteger) (integer object.Integer, err error) {
 	value, _ := strconv.Atoi(node.Value)
-	return &object.Integer{Value: value}
+	integer = object.Integer{Value: value}
+	return
 }

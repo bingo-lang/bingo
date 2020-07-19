@@ -19,10 +19,12 @@ func (p *Parser) checkIsStatementSeparator() bool {
 	if p.tokenIsStatementSeparator() {
 		p.advance()
 		return true
+	} else {
+		for ; !p.tokenIsStatementSeparator(); p.advance() {
+		}
+		p.advance()
+		return false
 	}
-	for ; !p.tokenIsStatementSeparator(); p.advance() {
-	}
-	return false
 }
 
 func (p *Parser) tokenIsEOF() bool {

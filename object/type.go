@@ -1,9 +1,8 @@
 package object
 
-type Type uint
+type Type string
 
 const (
-	UNDEFINED = iota
-	INTEGER
-	BOOLEAN
+	INTEGER = "INTEGER"
+	BOOLEAN = "BOOLEAN"
 )

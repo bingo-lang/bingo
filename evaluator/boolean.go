@@ -5,7 +5,8 @@ import (
 	"github.com/bingo-lang/bingo/object"
 )
 
-func evalExpressionBoolean(node ast.ExpressionBoolean) *object.Boolean {
+func evalExpressionBoolean(node ast.ExpressionBoolean) (boolean object.Boolean, err error) {
 	value := node.Value == "true"
-	return &object.Boolean{Value: value}
+	boolean = object.Boolean{Value: value}
+	return
 }

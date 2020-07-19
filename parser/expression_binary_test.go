@@ -42,6 +42,7 @@ func TestOperatorPrecedence(t *testing.T) {
 		{"1 > 2 * 3", "(1 > (2 * 3))"},
 		{"1 > 2 + 3", "(1 > (2 + 3))"},
 		{"1 == 2 / 2", "(1 == (2 / 2))"},
+		{"1 < 2 || 1 > 2", "((1 < 2) || (1 > 2))"},
 	}
 	for _, testCase := range testCases {
 		testOperatorPrecedence(t, testCase.source, testCase.expected)

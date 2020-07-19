@@ -1,0 +1,36 @@
+package evaluator
+
+import (
+	"github.com/bingo-lang/bingo/ast"
+	"github.com/bingo-lang/bingo/object"
+)
+
+func evalUnaryMinus(node ast.Expression) (object.Object, error) {
+	node, err := evalExpression(node)
+	if err != nil {
+		return nil, err
+	}
+	switch ob := node.(type) {
+	case object.Integer:
+		ob.Value = -ob.Value
+		return ob, nil
+	default:
+		// This is an error
+		return nil, nil
+	}
+}
+
+func evalUnaryBang(node ast.Expression) (object.Object, error) {
+	node, err := evalExpression(node)
+	if err != nil {
+		return nil, err
+	}
+	switch ob := node.(type) {
+	case object.Boolean:
+		ob.Value = !ob.Value
+		return ob, nil
+	default:
+		// This is an error
+		return nil, nil
+	}
+}
