@@ -13,6 +13,7 @@ func TestScanner(t *testing.T) {
 		let c bool = 1 > 2 || 1 >= 2 && 1 < 2 && 1 <= 2 && 1 == 2;
 		let d bool = !true;
 		let e bool = true == true;
+		let f int = (10);
 	`)
 	expectedTokens := []token.Token{
 		// First statement.
@@ -86,6 +87,16 @@ func TestScanner(t *testing.T) {
 		token.New(token.BOOLEAN, "true"),
 		token.New(token.EQUAL, "=="),
 		token.New(token.BOOLEAN, "true"),
+		token.New(token.SEMICOLON, ";"),
+
+		// Sixth statement
+		token.New(token.LET, "let"),
+		token.New(token.IDENTIFIER, "f"),
+		token.New(token.INT, "int"),
+		token.New(token.ASSIGN, "="),
+		token.New(token.LPAREN, "("),
+		token.New(token.INTEGER, "10"),
+		token.New(token.RPAREN, ")"),
 		token.New(token.SEMICOLON, ";"),
 
 		token.New(token.EOF, ""),

@@ -12,6 +12,8 @@ func (p *Parser) parseExpressionUnary() (ast.Expression, error) {
 		return p.parseExpressionInteger()
 	case token.BOOLEAN:
 		return p.parseExpressionBoolean()
+	case token.LPAREN:
+		return p.parseExpressionGrouped()
 	default:
 		return p.parseExpressionPrefix()
 	}
@@ -30,6 +32,19 @@ func (p *Parser) parseExpressionPrefix() (expressionUnary ast.ExpressionUnary, e
 		err = fmt.Errorf("Token %q is not a unary operator", p.token.Value)
 	}
 	return
+}
+
+func (p *Parser) parseExpressionGrouped() (ast.Expression, error) {
+	p.advance()
+	expression, err := p.parseExpression(LOWEST)
+	if err != nil {
+		return nil, err
+	}
+	if p.tokenIs(token.RPAREN) {
+		p.advance()
+		return expression, nil
+	}
+	return nil, fmt.Errorf("Expecting token to be ) got %s", p.token.Type)
 }
 
 func (p *Parser) parseExpressionInteger() (expression ast.ExpressionInteger, err error) {

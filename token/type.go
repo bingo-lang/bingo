@@ -20,6 +20,9 @@ const (
 	EQUAL    = "=="
 	BANG     = "!"
 
+	RPAREN = "RPAREN"
+	LPAREN = "LPAREN"
+
 	ASSIGN    = "="
 	SEMICOLON = ";"
 
