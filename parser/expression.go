@@ -21,6 +21,7 @@ func (p *Parser) parseExpression(precedence Precedence) (expression ast.Expressi
 	if err != nil {
 		return nil, err
 	}
+	// TODO(tugorez): Create a util function to better validate this precedence validation.
 	for pr := p.precedence(); pr > precedence && err == nil; pr = p.precedence() {
 		expression, err = p.parseExpressionBinary(expression, pr)
 	}
