@@ -26,6 +26,10 @@ func (p *Parser) checkIsStatementSeparator() bool {
 	}
 }
 
+func (p *Parser) assertTokenIsInteger() bool {
+	return p.assertTokenIs(token.INTEGER)
+}
+
 func (p *Parser) assertTokenIsLParen() bool {
 	return p.assertTokenIs(token.LPAREN)
 }

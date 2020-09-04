@@ -22,3 +22,19 @@ func TestExpressionInteger(t *testing.T) {
 		}
 	}
 }
+
+func TestExpressionIntegerErrors(t *testing.T) {
+	testCases := []string{
+		"@",
+		"e",
+		"pi",
+	}
+	for _, testCase := range testCases {
+		source := strings.NewReader(testCase)
+		parser := New(source)
+		expressionInteger, err := parser.parseExpressionInteger()
+		if err == nil {
+			t.Fatalf("Expecting invalid expression %q to throw an error. Got an integer with value %q instead", testCase, expressionInteger.Value)
+		}
+	}
+}
