@@ -15,7 +15,7 @@ func (p *Parser) parseStatementExpression() (statement ast.StatementExpression, 
 		if p.checkIsStatementSeparator() {
 			statement = ast.StatementExpression{Expression: expression}
 		} else {
-			err = fmt.Errorf("Expecting statement separator got %q", token.Value)
+			err = fmt.Errorf("[StatementExpression] invalid token %q", token.Value)
 		}
 	} else {
 		err = expressionError
