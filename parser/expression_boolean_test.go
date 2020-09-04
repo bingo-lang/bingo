@@ -22,3 +22,19 @@ func TestExpressionBoolean(t *testing.T) {
 		}
 	}
 }
+
+func TestExpressionBooleanErrors(t *testing.T) {
+	testCases := []string{
+		"@",
+		"1",
+		"pi",
+	}
+	for _, testCase := range testCases {
+		source := strings.NewReader(testCase)
+		parser := New(source)
+		expressionBoolean, err := parser.parseExpressionBoolean()
+		if err == nil {
+			t.Fatalf("Expecting invalid expression %q to throw an error. Got a boolean with value %q instead", testCase, expressionBoolean.Value)
+		}
+	}
+}
