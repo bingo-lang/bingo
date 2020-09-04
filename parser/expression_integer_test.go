@@ -23,7 +23,7 @@ func TestExpressionInteger(t *testing.T) {
 	}
 }
 
-func TestExpressionIntegerErrors(t *testing.T) {
+func TestExpressionIntegerError(t *testing.T) {
 	testCases := []string{
 		"@",
 		"e",

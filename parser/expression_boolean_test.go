@@ -23,7 +23,7 @@ func TestExpressionBoolean(t *testing.T) {
 	}
 }
 
-func TestExpressionBooleanErrors(t *testing.T) {
+func TestExpressionBooleanError(t *testing.T) {
 	testCases := []string{
 		"@",
 		"1",

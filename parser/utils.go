@@ -4,16 +4,6 @@ import (
 	"github.com/bingo-lang/bingo/token"
 )
 
-func (p *Parser) tokenIsUnaryOperator() bool {
-	switch p.token.Type {
-	case token.PLUS, token.MINUS,
-		token.BANG:
-		return true
-	default:
-		return false
-	}
-}
-
 func (p *Parser) checkIsStatementSeparator() bool {
 	if p.tokenIsStatementSeparator() {
 		p.advance()
@@ -24,6 +14,22 @@ func (p *Parser) checkIsStatementSeparator() bool {
 		p.advance()
 		return false
 	}
+}
+
+func (p *Parser) assertTokenIsBinaryOperator() bool {
+	if p.tokenIsBinaryOperator() {
+		p.advance()
+		return true
+	}
+	return false
+}
+
+func (p *Parser) assertTokenIsUnaryOperator() bool {
+	if p.tokenIsUnaryOperator() {
+		p.advance()
+		return true
+	}
+	return false
 }
 
 func (p *Parser) assertTokenIsBoolean() bool {
@@ -40,6 +46,27 @@ func (p *Parser) assertTokenIsLParen() bool {
 
 func (p *Parser) assertTokenIsRParen() bool {
 	return p.assertTokenIs(token.RPAREN)
+}
+
+func (p *Parser) tokenIsBinaryOperator() bool {
+	switch p.token.Type {
+	case token.PLUS, token.MINUS, token.ASTERISK, token.SLASH,
+		token.GT, token.GTE, token.LT, token.LTE, token.EQUAL,
+		token.OR, token.AND:
+		return true
+	default:
+		return false
+	}
+}
+
+func (p *Parser) tokenIsUnaryOperator() bool {
+	switch p.token.Type {
+	case token.PLUS, token.MINUS,
+		token.BANG:
+		return true
+	default:
+		return false
+	}
 }
 
 func (p *Parser) tokenIsStatementSeparator() bool {

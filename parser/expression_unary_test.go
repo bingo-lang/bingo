@@ -27,3 +27,17 @@ func TestExpressionUnary(t *testing.T) {
 		}
 	}
 }
+
+func TestExpressionUnaryError(t *testing.T) {
+	testCases := []string{
+		"@1",
+	}
+	for _, testCase := range testCases {
+		source := strings.NewReader(testCase)
+		parser := New(source)
+		expressionUnary, err := parser.parseExpressionUnary()
+		if err == nil {
+			t.Fatalf("Expecting invalid expression %q to throw an error. Got %s instead", testCase, expressionUnary)
+		}
+	}
+}

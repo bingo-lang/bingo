@@ -33,3 +33,19 @@ func TestExpressionBinary(t *testing.T) {
 		}
 	}
 }
+
+func TestExpressionBinaryError(t *testing.T) {
+	testCases := []string{
+		"- /",
+		"@ /",
+		"@ 1",
+	}
+	for _, testCase := range testCases {
+		source := strings.NewReader(testCase)
+		parser := New(source)
+		expressionBinary, err := parser.parseExpressionBinary(nil, LOWEST)
+		if err == nil {
+			t.Fatalf("Expecting invalid expression %q to throw an error. Got %s instead", testCase, expressionBinary)
+		}
+	}
+}

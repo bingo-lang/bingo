@@ -1,12 +1,15 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/bingo-lang/bingo/ast"
 )
 
 func (p *Parser) parseExpressionUnary() (expressionUnary ast.ExpressionUnary, err error) {
-	// TODO(tugorez): Validate this is a unary operator.
-	operator := p.advance()
+	operator := p.token
+	if !p.assertTokenIsUnaryOperator() {
+		return ast.ExpressionUnary{}, fmt.Errorf("[ExpressionUnary] invalid token %q", operator.Value)
+	}
 	expression, err := p.parseExpression(LOWEST)
 	if err != nil {
 		return

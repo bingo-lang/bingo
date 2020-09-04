@@ -19,7 +19,7 @@ func (p *Parser) parseExpression(precedence Precedence) (expression ast.Expressi
 		err = fmt.Errorf("[ParseExpression] invalid token %q", p.token.Value)
 	}
 	if err != nil {
-		return nil, err
+		return
 	}
 	// TODO(tugorez): Create a util function to better validate this precedence validation.
 	for pr := p.precedence(); pr > precedence && err == nil; pr = p.precedence() {
