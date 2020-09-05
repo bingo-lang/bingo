@@ -29,11 +29,11 @@ func Start(stdin io.Reader, stdout io.Writer) {
 				if err == nil {
 					fmt.Println(object)
 				} else {
-					fmt.Printf("Runtime error: %s\n", err)
+					fmt.Printf("[RuntimeError]: %s\n", err)
 				}
 			}
 		} else {
-			fmt.Printf("Syntax Error: %s\n", err)
+			fmt.Printf("[SyntaxError]: %s\n", err)
 		}
 	}
 }

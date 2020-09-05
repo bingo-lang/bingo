@@ -16,6 +16,18 @@ func (p *Parser) checkIsStatementSeparator() bool {
 	}
 }
 
+func (p *Parser) assertTokenIsAssign() bool {
+	return p.assertTokenIs(token.ASSIGN)
+}
+
+func (p *Parser) assertTokenIsIdentifier() bool {
+	return p.assertTokenIs(token.IDENTIFIER)
+}
+
+func (p *Parser) assertTokenIsLet() bool {
+	return p.assertTokenIs(token.LET)
+}
+
 func (p *Parser) assertTokenIsBinaryOperator() bool {
 	if p.tokenIsBinaryOperator() {
 		p.advance()
@@ -46,6 +58,10 @@ func (p *Parser) assertTokenIsLParen() bool {
 
 func (p *Parser) assertTokenIsRParen() bool {
 	return p.assertTokenIs(token.RPAREN)
+}
+
+func (p *Parser) tokenIsLet() bool {
+	return p.tokenIs(token.LET)
 }
 
 func (p *Parser) tokenIsBinaryOperator() bool {

@@ -5,5 +5,10 @@ import (
 )
 
 func (p *Parser) parseStatement() (ast.Statement, error) {
-	return p.parseStatementExpression()
+	switch {
+	case p.tokenIsLet():
+		return p.parseStatementLet()
+	default:
+		return p.parseStatementExpression()
+	}
 }
