@@ -10,7 +10,7 @@ func (p *Parser) parseExpressionUnary() (expressionUnary ast.ExpressionUnary, er
 	if !p.assertTokenIsUnaryOperator() {
 		return ast.ExpressionUnary{}, fmt.Errorf("[ExpressionUnary] invalid token %q", operator.Value)
 	}
-	expression, err := p.parseExpression(LOWEST)
+	expression, err := p.parseExpression(PREFIX)
 	if err != nil {
 		return
 	}
