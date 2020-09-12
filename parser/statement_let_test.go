@@ -8,6 +8,7 @@ import (
 func TestParseStatementLet(t *testing.T) {
 	testCases := []struct{ source, identifier string }{
 		{"let x = 1", "x"},
+		{"let x = 2; ", "x"},
 	}
 	for _, testCase := range testCases {
 		reader := strings.NewReader(testCase.source)

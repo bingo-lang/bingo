@@ -20,7 +20,12 @@ func (p *Parser) parseStatementLet() (statement ast.StatementLet, err error) {
 	}
 	expression, err := p.parseExpression(LOWEST)
 	if err != nil {
+		p.checkIsStatementSeparator()
 		return ast.StatementLet{}, err
+	}
+	if token := p.token; !p.checkIsStatementSeparator() {
+		err = fmt.Errorf("[StatementLet] invalid token %q", token.Value)
+		return
 	}
 	statement = ast.StatementLet{
 		Identifier: identifier,
