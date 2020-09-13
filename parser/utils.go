@@ -1,8 +1,20 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/bingo-lang/bingo/token"
 )
+
+var unaryOperators = []token.Type{
+	token.PLUS, token.MINUS,
+	token.BANG,
+}
+
+var binaryOperators = []token.Type{
+	token.PLUS, token.MINUS, token.ASTERISK, token.SLASH,
+	token.GT, token.GTE, token.LT, token.LTE, token.EQUAL,
+	token.OR, token.AND,
+}
 
 func (p *Parser) checkIsStatementSeparator() bool {
 	if p.tokenIsStatementSeparator() {
@@ -16,47 +28,40 @@ func (p *Parser) checkIsStatementSeparator() bool {
 	}
 }
 
-func (p *Parser) assertTokenIsAssign() bool {
+func (p *Parser) assertTokenIsAssign() (token.Token, error) {
 	return p.assertTokenIs(token.ASSIGN)
 }
 
-func (p *Parser) assertTokenIsIdentifier() bool {
+func (p *Parser) assertTokenIsIdentifier() (token.Token, error) {
 	return p.assertTokenIs(token.IDENTIFIER)
 }
 
-func (p *Parser) assertTokenIsLet() bool {
+func (p *Parser) assertTokenIsLet() (token.Token, error) {
 	return p.assertTokenIs(token.LET)
 }
 
-func (p *Parser) assertTokenIsBinaryOperator() bool {
-	if p.tokenIsBinaryOperator() {
-		p.advance()
-		return true
-	}
-	return false
+func (p *Parser) assertTokenIsBinaryOperator() (token.Token, error) {
+	return p.assertTokenIs(binaryOperators...)
+
 }
 
-func (p *Parser) assertTokenIsUnaryOperator() bool {
-	if p.tokenIsUnaryOperator() {
-		p.advance()
-		return true
-	}
-	return false
+func (p *Parser) assertTokenIsUnaryOperator() (token.Token, error) {
+	return p.assertTokenIs(unaryOperators...)
 }
 
-func (p *Parser) assertTokenIsBoolean() bool {
+func (p *Parser) assertTokenIsBoolean() (token.Token, error) {
 	return p.assertTokenIs(token.BOOLEAN)
 }
 
-func (p *Parser) assertTokenIsInteger() bool {
+func (p *Parser) assertTokenIsInteger() (token.Token, error) {
 	return p.assertTokenIs(token.INTEGER)
 }
 
-func (p *Parser) assertTokenIsLParen() bool {
+func (p *Parser) assertTokenIsLParen() (token.Token, error) {
 	return p.assertTokenIs(token.LPAREN)
 }
 
-func (p *Parser) assertTokenIsRParen() bool {
+func (p *Parser) assertTokenIsRParen() (token.Token, error) {
 	return p.assertTokenIs(token.RPAREN)
 }
 
@@ -65,24 +70,11 @@ func (p *Parser) tokenIsLet() bool {
 }
 
 func (p *Parser) tokenIsBinaryOperator() bool {
-	switch p.token.Type {
-	case token.PLUS, token.MINUS, token.ASTERISK, token.SLASH,
-		token.GT, token.GTE, token.LT, token.LTE, token.EQUAL,
-		token.OR, token.AND:
-		return true
-	default:
-		return false
-	}
+	return p.tokenIs(binaryOperators...)
 }
 
 func (p *Parser) tokenIsUnaryOperator() bool {
-	switch p.token.Type {
-	case token.PLUS, token.MINUS,
-		token.BANG:
-		return true
-	default:
-		return false
-	}
+	return p.tokenIs(unaryOperators...)
 }
 
 func (p *Parser) tokenIsStatementSeparator() bool {
@@ -109,14 +101,20 @@ func (p *Parser) tokenIsEOF() bool {
 	return p.tokenIs(token.EOF)
 }
 
-func (p *Parser) assertTokenIs(typ token.Type) bool {
-	if p.tokenIs(typ) {
-		p.advance()
-		return true
+func (p *Parser) assertTokenIs(types ...token.Type) (tok token.Token, err error) {
+	if p.tokenIs(types...) {
+		tok = p.advance()
+	} else {
+		err = fmt.Errorf("[SyntaxError] Expecting token to be %s got %s instead", types, p.token.Type)
 	}
-	return false
+	return
 }
 
-func (p *Parser) tokenIs(typ token.Type) bool {
-	return p.token.Type == typ
+func (p *Parser) tokenIs(types ...token.Type) bool {
+	for _, t := range types {
+		if p.token.Type == t {
+			return true
+		}
+	}
+	return false
 }

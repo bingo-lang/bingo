@@ -1,20 +1,18 @@
 package parser
 
 import (
-	"fmt"
 	"github.com/bingo-lang/bingo/ast"
 )
 
-func (p *Parser) parseExpressionGrouped() (ast.Expression, error) {
-	if !p.assertTokenIsLParen() {
-		return nil, fmt.Errorf("[ParseExpressionGrouped] invalid token %q", p.token.Value)
-	}
-	expression, err := p.parseExpression(LOWEST)
+func (p *Parser) parseExpressionGrouped() (expression ast.Expression, err error) {
+	_, err = p.assertTokenIsLParen()
 	if err != nil {
-		return nil, err
+		return
 	}
-	if !p.assertTokenIsRParen() {
-		return nil, fmt.Errorf("[ParseExpressionGrouped] invalid token %q", p.token.Value)
+	expression, err = p.parseExpression(LOWEST)
+	if err != nil {
+		return
 	}
-	return expression, nil
+	_, err = p.assertTokenIsRParen()
+	return
 }

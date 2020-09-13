@@ -1,22 +1,22 @@
 package parser
 
 import (
-	"fmt"
 	"github.com/bingo-lang/bingo/ast"
 )
 
-func (p *Parser) parseExpressionBinary(expLeft ast.Expression, pr Precedence) (ast.ExpressionBinary, error) {
-	operator := p.token
-	if !p.assertTokenIsBinaryOperator() {
-		return ast.ExpressionBinary{}, fmt.Errorf("[ExpressionBinary] invalid token %q", operator.Value)
+func (p *Parser) parseExpressionBinary(expLeft ast.Expression, pr Precedence) (expression ast.ExpressionBinary, err error) {
+	operator, err := p.assertTokenIsBinaryOperator()
+	if err != nil {
+		return
 	}
 	expRight, err := p.parseExpression(pr)
 	if err != nil {
-		return ast.ExpressionBinary{}, err
+		return
 	}
-	return ast.ExpressionBinary{
+	expression = ast.ExpressionBinary{
 		ExpressionLeft:  expLeft,
 		Operator:        operator,
 		ExpressionRight: expRight,
-	}, nil
+	}
+	return
 }

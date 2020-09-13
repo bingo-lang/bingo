@@ -1,16 +1,14 @@
 package parser
 
 import (
-	"fmt"
 	"github.com/bingo-lang/bingo/ast"
 )
 
 func (p *Parser) parseExpressionBoolean() (expression ast.ExpressionBoolean, err error) {
-	value := p.token.Value
-	if !p.assertTokenIsBoolean() {
-		err = fmt.Errorf("[ExpressionBoolean] invalid token %q", value)
+	boolean, err := p.assertTokenIsBoolean()
+	if err != nil {
 		return
 	}
-	expression = ast.ExpressionBoolean{Value: value}
+	expression = ast.ExpressionBoolean{Value: boolean.Value}
 	return
 }

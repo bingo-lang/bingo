@@ -6,17 +6,20 @@ import (
 )
 
 func (p *Parser) parseStatementLet() (statement ast.StatementLet, err error) {
-	let := p.token
-	if !p.assertTokenIsLet() {
-		return ast.StatementLet{}, fmt.Errorf("[StatementLet] invalid token %q", let.Value)
+	_, err = p.assertTokenIsLet()
+	if err != nil {
+		p.checkIsStatementSeparator()
+		return
 	}
-	identifier := p.token
-	if !p.assertTokenIsIdentifier() {
-		return ast.StatementLet{}, fmt.Errorf("[StatementLet] invalid token %q", identifier.Value)
+	identifier, err := p.assertTokenIsIdentifier()
+	if err != nil {
+		p.checkIsStatementSeparator()
+		return
 	}
-	assign := p.token
-	if !p.assertTokenIsAssign() {
-		return ast.StatementLet{}, fmt.Errorf("[StatementLet] invalid token %q", assign.Value)
+	_, err = p.assertTokenIsAssign()
+	if err != nil {
+		p.checkIsStatementSeparator()
+		return
 	}
 	expression, err := p.parseExpression(LOWEST)
 	if err != nil {
