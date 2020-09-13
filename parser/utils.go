@@ -28,6 +28,14 @@ func (p *Parser) checkIsStatementSeparator() bool {
 	}
 }
 
+func (p *Parser) assertTokenIsLBrace() (token.Token, error) {
+	return p.assertTokenIs(token.LBRACE)
+}
+
+func (p *Parser) assertTokenIsRBrace() (token.Token, error) {
+	return p.assertTokenIs(token.RBRACE)
+}
+
 func (p *Parser) assertTokenIsAssign() (token.Token, error) {
 	return p.assertTokenIs(token.ASSIGN)
 }
@@ -63,6 +71,14 @@ func (p *Parser) assertTokenIsLParen() (token.Token, error) {
 
 func (p *Parser) assertTokenIsRParen() (token.Token, error) {
 	return p.assertTokenIs(token.RPAREN)
+}
+
+func (p *Parser) tokenIsLBrace() bool {
+	return p.tokenIs(token.LBRACE)
+}
+
+func (p *Parser) tokenIsRBrace() bool {
+	return p.tokenIs(token.RBRACE)
 }
 
 func (p *Parser) tokenIsLet() bool {

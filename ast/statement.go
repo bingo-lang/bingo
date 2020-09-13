@@ -25,3 +25,12 @@ type StatementLet struct {
 func (se StatementLet) String() string {
 	return fmt.Sprintf("let %s = %s", se.Identifier.Value, se.Expression)
 }
+
+type StatementBlock struct {
+	Statements []Statement
+}
+
+func (sb StatementBlock) String() string {
+	// TODO(tugorez): Improve this section
+	return ""
+}

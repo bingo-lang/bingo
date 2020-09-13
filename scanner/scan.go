@@ -112,6 +112,14 @@ func (s *Scanner) scanSymbol() token.Token {
 		symbol := string(s.char)
 		s.advance()
 		return token.New(token.RPAREN, symbol)
+	case '{':
+		symbol := string(s.char)
+		s.advance()
+		return token.New(token.LBRACE, symbol)
+	case '}':
+		symbol := string(s.char)
+		s.advance()
+		return token.New(token.RBRACE, symbol)
 
 	default:
 		return s.scanUndefined()

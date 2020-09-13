@@ -23,6 +23,9 @@ const (
 	RPAREN = "RPAREN"
 	LPAREN = "LPAREN"
 
+	LBRACE = "{"
+	RBRACE = "}"
+
 	ASSIGN    = "="
 	SEMICOLON = ";"
 
