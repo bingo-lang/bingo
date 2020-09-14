@@ -16,7 +16,7 @@ func (p *Parser) parseExpression(precedence Precedence) (expression ast.Expressi
 	case p.tokenIsUnaryOperator():
 		expression, err = p.parseExpressionUnary()
 	default:
-		err = fmt.Errorf("[ParseExpression] invalid token %q", p.token.Value)
+		err = fmt.Errorf("Invalid token %q", p.token.Value)
 	}
 	if err != nil {
 		return

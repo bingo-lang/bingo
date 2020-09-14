@@ -4,13 +4,17 @@ import (
 	"github.com/bingo-lang/bingo/ast"
 )
 
-func (p *Parser) parseStatement() (ast.Statement, error) {
+func (p *Parser) parseStatement() (statement ast.Statement, err error) {
 	switch {
 	case p.tokenIsLBrace():
-		return p.parseStatementBlock()
+		statement, err = p.parseStatementBlock()
 	case p.tokenIsLet():
-		return p.parseStatementLet()
+		statement, err = p.parseStatementLet()
 	default:
-		return p.parseStatementExpression()
+		statement, err = p.parseStatementExpression()
 	}
+	if err != nil {
+		p.advanceUntilStatementSeparator()
+	}
+	return
 }

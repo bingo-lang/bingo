@@ -12,13 +12,13 @@ func TestEvalExpression(t *testing.T) {
 		source   string
 		expected int
 	}{
-		{"-11", -11},
-		{"10 + 1", 11},
-		{"10 - 1", 9},
-		{"10 * 1", 10},
-		{"10 / 2", 5},
-		{"+10 / 2", 5},
-		{"10 + 1 * 1000", 1010},
+		{"-11;", -11},
+		{"10 + 1;", 11},
+		{"10 - 1;", 9},
+		{"10 * 1;", 10},
+		{"10 / 2;", 5},
+		{"+10 / 2;", 5},
+		{"10 + 1 * 1000;", 1010},
 	}
 	for _, testCase := range testCases {
 		source := strings.NewReader(testCase.source)
@@ -43,7 +43,7 @@ func TestEvalExpression(t *testing.T) {
 }
 
 func TestEvalExpressionInteger(t *testing.T) {
-	source := strings.NewReader(`1`)
+	source := strings.NewReader(`1;`)
 	expected := object.Integer{Value: 1}
 	parser := parser.New(source)
 	program, err := parser.ParseProgram()
@@ -64,7 +64,7 @@ func TestEvalExpressionInteger(t *testing.T) {
 }
 
 func TestEvalExpressionBoolean(t *testing.T) {
-	source := strings.NewReader(`true`)
+	source := strings.NewReader(`true;`)
 	expected := object.Boolean{Value: true}
 	parser := parser.New(source)
 	program, err := parser.ParseProgram()

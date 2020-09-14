@@ -7,7 +7,7 @@ import (
 
 func TestParseStatementLet(t *testing.T) {
 	testCases := []struct{ source, identifier string }{
-		{"let x = 1", "x"},
+		{"let x = 1;", "x"},
 		{"let x = 2; ", "x"},
 	}
 	for _, testCase := range testCases {
@@ -15,7 +15,7 @@ func TestParseStatementLet(t *testing.T) {
 		parser := New(reader)
 		statement, err := parser.parseStatementLet()
 		if err != nil {
-			t.Fatal(err)
+			t.Fatalf("Error on %q, %s", testCase.source, err)
 		}
 		if statement.Identifier.Value != testCase.identifier {
 			t.Fatalf("Expecting identifier %q, got %q instead", testCase.identifier, statement.Identifier.Value)

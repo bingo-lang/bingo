@@ -16,16 +16,14 @@ var binaryOperators = []token.Type{
 	token.OR, token.AND,
 }
 
-func (p *Parser) checkIsStatementSeparator() bool {
-	if p.tokenIsStatementSeparator() {
-		p.advance()
-		return true
-	} else {
-		for ; !p.tokenIsStatementSeparator(); p.advance() {
-		}
-		p.advance()
-		return false
+func (p *Parser) advanceUntilStatementSeparator() {
+	for ; !p.tokenIsStatementSeparator(); p.advance() {
 	}
+	p.advance()
+}
+
+func (p *Parser) assertTokenIsSemicolon() (token.Token, error) {
+	return p.assertTokenIs(token.SEMICOLON)
 }
 
 func (p *Parser) assertTokenIsLBrace() (token.Token, error) {
@@ -50,7 +48,6 @@ func (p *Parser) assertTokenIsLet() (token.Token, error) {
 
 func (p *Parser) assertTokenIsBinaryOperator() (token.Token, error) {
 	return p.assertTokenIs(binaryOperators...)
-
 }
 
 func (p *Parser) assertTokenIsUnaryOperator() (token.Token, error) {
@@ -121,7 +118,11 @@ func (p *Parser) assertTokenIs(types ...token.Type) (tok token.Token, err error)
 	if p.tokenIs(types...) {
 		tok = p.advance()
 	} else {
-		err = fmt.Errorf("[SyntaxError] Expecting token to be %s got %s instead", types, p.token.Type)
+		if len(types) == 1 {
+			err = fmt.Errorf("Expecting token to be %s got %s instead", types[0], p.token.Type)
+		} else {
+			err = fmt.Errorf("Expecting token to be %s got %s instead", types, p.token.Type)
+		}
 	}
 	return
 }
