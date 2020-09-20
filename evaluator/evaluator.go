@@ -3,40 +3,47 @@ package evaluator
 import (
 	"fmt"
 	"github.com/bingo-lang/bingo/ast"
+	"github.com/bingo-lang/bingo/environment"
 	"github.com/bingo-lang/bingo/object"
 	"github.com/bingo-lang/bingo/token"
 )
 
-func Eval(statement ast.Statement) (object.Object, error) {
+func Eval(statement ast.Statement, env *environment.Environment) (object.Object, error) {
 	switch statement := statement.(type) {
+	case ast.StatementLet:
+		obj, err := evalExpression(statement.Expression, env)
+		env.Set(statement.Identifier.Value, obj)
+		return obj, err
 	case ast.StatementExpression:
-		return evalExpression(statement.Expression)
+		return evalExpression(statement.Expression, env)
 	default:
 		return nil, fmt.Errorf("Unsupported statement %T", statement)
 	}
 }
 
-func evalExpression(expression ast.Expression) (object.Object, error) {
+func evalExpression(expression ast.Expression, env *environment.Environment) (object.Object, error) {
 	switch expression := expression.(type) {
 	case ast.ExpressionBinary:
-		return evalExpressionBinary(expression)
+		return evalExpressionBinary(expression, env)
 	case ast.ExpressionUnary:
-		return evalExpressionUnary(expression)
+		return evalExpressionUnary(expression, env)
 	case ast.ExpressionInteger:
 		return evalExpressionInteger(expression)
 	case ast.ExpressionBoolean:
 		return evalExpressionBoolean(expression)
+	case ast.ExpressionIdentifier:
+		return evalExpressionIdentifier(expression, env)
 	default:
 		return nil, fmt.Errorf("Unsupported expression %q of type %T", expression, expression)
 	}
 }
 
-func evalExpressionBinary(expressionBinary ast.ExpressionBinary) (object.Object, error) {
-	left, err := evalExpression(expressionBinary.ExpressionLeft)
+func evalExpressionBinary(expressionBinary ast.ExpressionBinary, env *environment.Environment) (object.Object, error) {
+	left, err := evalExpression(expressionBinary.ExpressionLeft, env)
 	if err != nil {
 		return nil, err
 	}
-	right, err := evalExpression(expressionBinary.ExpressionRight)
+	right, err := evalExpression(expressionBinary.ExpressionRight, env)
 	if err != nil {
 		return nil, err
 	}
@@ -68,15 +75,20 @@ func evalExpressionBinary(expressionBinary ast.ExpressionBinary) (object.Object,
 	}
 }
 
-func evalExpressionUnary(expressionUnary ast.ExpressionUnary) (object.Object, error) {
+func evalExpressionUnary(expressionUnary ast.ExpressionUnary, env *environment.Environment) (object.Object, error) {
 	switch expressionUnary.Operator.Type {
 	case token.PLUS:
-		return evalExpression(expressionUnary.Expression)
+		return evalExpression(expressionUnary.Expression, env)
 	case token.MINUS:
-		return evalUnaryMinus(expressionUnary.Expression)
+		return evalUnaryMinus(expressionUnary.Expression, env)
 	case token.BANG:
-		return evalUnaryBang(expressionUnary.Expression)
+		return evalUnaryBang(expressionUnary.Expression, env)
 	default:
 		return nil, fmt.Errorf("Unsupported binary operator %q", expressionUnary.Operator.Value)
 	}
+}
+
+func evalExpressionIdentifier(expressionIdentifier ast.ExpressionIdentifier, env *environment.Environment) (object.Object, error) {
+	// TODO(tugorez): Define a proper behavior and improve the error handling
+	return env.Get(expressionIdentifier.Value), nil
 }

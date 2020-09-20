@@ -2,11 +2,12 @@ package evaluator
 
 import (
 	"github.com/bingo-lang/bingo/ast"
+	"github.com/bingo-lang/bingo/environment"
 	"github.com/bingo-lang/bingo/object"
 )
 
-func evalUnaryMinus(node ast.Expression) (object.Object, error) {
-	node, err := evalExpression(node)
+func evalUnaryMinus(node ast.Expression, env *environment.Environment) (object.Object, error) {
+	node, err := evalExpression(node, env)
 	if err != nil {
 		return nil, err
 	}
@@ -20,8 +21,8 @@ func evalUnaryMinus(node ast.Expression) (object.Object, error) {
 	}
 }
 
-func evalUnaryBang(node ast.Expression) (object.Object, error) {
-	node, err := evalExpression(node)
+func evalUnaryBang(node ast.Expression, env *environment.Environment) (object.Object, error) {
+	node, err := evalExpression(node, env)
 	if err != nil {
 		return nil, err
 	}
