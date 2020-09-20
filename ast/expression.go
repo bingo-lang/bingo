@@ -31,6 +31,15 @@ func (eu ExpressionUnary) String() string {
 	return fmt.Sprintf("%s%s", eu.Operator.Type, eu.Expression)
 }
 
+// Identifier.
+type ExpressionIdentifier struct {
+	Value string
+}
+
+func (ei ExpressionIdentifier) String() string {
+	return ei.Value
+}
+
 // Integer.
 type ExpressionInteger struct {
 	Value string

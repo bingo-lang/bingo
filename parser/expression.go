@@ -11,6 +11,8 @@ func (p *Parser) parseExpression(precedence Precedence) (expression ast.Expressi
 		expression, err = p.parseExpressionInteger()
 	case p.tokenIsBoolean():
 		expression, err = p.parseExpressionBoolean()
+	case p.tokenIsIdentifier():
+		expression, err = p.parseExpressionIdentifier()
 	case p.tokenIsLParen():
 		expression, err = p.parseExpressionGrouped()
 	case p.tokenIsUnaryOperator():

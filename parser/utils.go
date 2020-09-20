@@ -70,6 +70,10 @@ func (p *Parser) assertTokenIsRParen() (token.Token, error) {
 	return p.assertTokenIs(token.RPAREN)
 }
 
+func (p *Parser) tokenIsIdentifier() bool {
+	return p.tokenIs(token.IDENTIFIER)
+}
+
 func (p *Parser) tokenIsLBrace() bool {
 	return p.tokenIs(token.LBRACE)
 }
