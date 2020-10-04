@@ -28,7 +28,7 @@ func TestEvalExpression(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		obj, err := Eval(program.Statements[0])
+		obj, err := Eval(program.Statements[0], nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -50,7 +50,7 @@ func TestEvalExpressionInteger(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	obj, err := Eval(program.Statements[0])
+	obj, err := Eval(program.Statements[0], nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,7 +71,7 @@ func TestEvalExpressionBoolean(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	obj, err := Eval(program.Statements[0])
+	obj, err := Eval(program.Statements[0], nil)
 	if err != nil {
 		t.Fatal(err)
 	}
