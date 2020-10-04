@@ -8,6 +8,6 @@ import (
 
 func main() {
 	fmt.Printf("Bingo 0.0.1 [WIP]\n\n")
-	fmt.Println("Type \"help\" for help. Press Ctrl + C to exit.")
+	fmt.Println("Press Ctrl + C to exit.")
 	repl.Start(os.Stdin, os.Stdout)
 }
